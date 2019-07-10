@@ -7,6 +7,11 @@ import pymongo
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
 schema = JsonSchema()
+
+mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")
+db = pymongo.database.Database(mongo, 'TCC')
+dbcol = pymongo.collection.Collection(db, 'TCC.Pessoas')
+
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP
 schemaCadastroPessoa = {
     "title": "Pessoa",
@@ -35,18 +40,10 @@ schemaCadastroPessoa = {
 }
 
 
-##Definição do endpoint
-
-##O schema a ser validado durante a requisição
-
 ## função  de cadastro inicial de pessoas
-@pessoa_blue.route("/pessoa", methods=['POST'])
-@schema.validate(schemaCadastroPessoa)
+@pessoa_blue.route("/", methods=['POST'])## Definição do endpoint
+@schema.validate(schemaCadastroPessoa)## O schema a ser validado durante a requisição
 def Cadastrar_Pessoa():
-    mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db = pymongo.database.Database(mongo, 'TCC')
-    dbcol = pymongo.collection.Collection(db, 'TCC.Pessoas')
-
     ##Requisição do Json
     if not request.json:
         return 'ERRO 400, requisição não encontrada'

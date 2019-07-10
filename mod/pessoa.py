@@ -1,13 +1,12 @@
 from flask_json_schema import JsonSchema
 from flask import Blueprint, request
 import pymongo
-from main import app
 
 ## ----------------------------------------------------------
 ## Rotas dos serviços para o APP
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
-schema = JsonSchema(app)
+# schema = JsonSchema(app)
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP
 schemaCadastroPessoa = {
     "title": "Pessoa",
@@ -39,7 +38,7 @@ schemaCadastroPessoa = {
 ##Definição do endpoint
 @pessoa_blue.route("/pessoa", methods=['POST'])
 ##O schema a ser validado durante a requisição
-@schema.validate(schemaCadastroPessoa)
+# @schema.validate(schemaCadastroPessoa)
 ## função  de cadastro inicial de pessoas
 def Cadastrar_Pessoa():
     mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")

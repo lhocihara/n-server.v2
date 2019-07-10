@@ -36,10 +36,11 @@ schemaCadastroPessoa = {
 
 
 ##Definição do endpoint
-@pessoa_blue.route("/pessoa", methods=['POST'])
+
 ##O schema a ser validado durante a requisição
 # @schema.validate(schemaCadastroPessoa)
 ## função  de cadastro inicial de pessoas
+@pessoa_blue.route("/cod", methods=['POST'])
 def Cadastrar_Pessoa():
     mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")
     db = pymongo.database.Database(mongo, 'TCC')

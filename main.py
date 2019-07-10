@@ -9,7 +9,7 @@ from flask_json_schema import JsonSchema, JsonValidationError
 ## ----------------------------------------------------------
 ## Importação dos módulos dos Blueprints
 ## ----------------------------------------------------------
-from blueprints_list.pessoa import pessoa_blue
+from mod.pessoa import pessoa_blue
 
 ## ----------------------------------------------------------
 ## Instanciando a API

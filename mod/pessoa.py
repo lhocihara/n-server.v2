@@ -1,12 +1,12 @@
 from flask_json_schema import JsonSchema
 from flask import Blueprint, request
 import pymongo
-from main import schema
+
 ## ----------------------------------------------------------
 ## Rotas dos serviços para o APP
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
-
+schema = JsonSchema()
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP
 schemaCadastroPessoa = {
     "title": "Pessoa",

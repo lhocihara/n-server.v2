@@ -6,7 +6,6 @@ from flask_json_schema import JsonSchema, JsonValidationError
 from mod.pessoa import pessoa_blue
 
 app = Flask(__name__)
-
 schema = JsonSchema(app)
 
 app.config.from_object('settings')

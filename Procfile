@@ -1,1 +1,1 @@
-web: python multiple_run.py
+web: python main.py

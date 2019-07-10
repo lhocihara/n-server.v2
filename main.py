@@ -7,6 +7,8 @@ from mod.pessoa import pessoa_blue
 
 app = Flask(__name__)
 
+schema = JsonSchema(app)
+
 app.config.from_object('settings')
 app.register_blueprint(pessoa_blue, url_prefix="/pessoa")
 

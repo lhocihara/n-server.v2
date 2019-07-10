@@ -1,2 +1,2 @@
 from create_app import app
-app.run(debug=True, use_reloader=True)
+app.run(debug=False, use_reloader=True)

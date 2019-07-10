@@ -8,7 +8,7 @@ from mod.pessoa import pessoa_blue
 app = Flask(__name__)
 
 app.config.from_object('settings')
-app.register_blueprint(pessoa_blue)
+app.register_blueprint(pessoa_blue, url_prefix="/pessoa")
 
 ##app.config['MONGO_DBNAME'] = 'TCC.Pessoas'
 ##app.config['MONGO_URI'] = 'mongodb+srv://admin_connect:<#_n2noficial_#>@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority'

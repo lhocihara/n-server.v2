@@ -48,7 +48,7 @@ schemaCadastroPessoa = {
 ## ----------------------------------------------------------
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
-@pessoa_blue.route("/", methods=['POST'])
+@pessoa_blue.route("/cadastro", methods=['POST'])
 @schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
     ## ----------------------------------------------------------

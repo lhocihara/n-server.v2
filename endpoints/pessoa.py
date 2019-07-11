@@ -6,7 +6,7 @@ import pymongo
 ## Definição do Blueprint e Schema
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
-schema = JsonSchema()
+# schema = JsonSchema()
 
 ## ----------------------------------------------------------
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP
@@ -49,7 +49,7 @@ schemaCadastroPessoa = {
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
 @pessoa_blue.route("/cadastro", methods=['POST'])
-@schema.validate(schemaCadastroPessoa)
+# @schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
     ## ----------------------------------------------------------
     ## Conexão com MongoDB

@@ -57,7 +57,7 @@ def Cadastrar_Pessoa():
     mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")
     db = pymongo.database.Database(mongo, 'TCC')
     dbcol = pymongo.collection.Collection(db, 'TCC.Pessoas')
-    
+
     ## Requisição do Json
     if not request.json:
         return 'ERRO 400, requisição não encontrada'

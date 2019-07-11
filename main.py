@@ -6,16 +6,19 @@ import os, pymongo
 from flask import Flask, jsonify, request, render_template
 from flask_json_schema import JsonSchema, JsonValidationError
 
+
 ## ----------------------------------------------------------
 ## Importação dos módulos dos Blueprints
 ## ----------------------------------------------------------
 from endpoints.pessoa import pessoa_blue
+
 
 ## ----------------------------------------------------------
 ## Instanciando a API
 ## ----------------------------------------------------------
 app = Flask(__name__)
 app.config.from_object('settings')
+
 
 ## ----------------------------------------------------------
 ## Lista de Blueprints
@@ -54,3 +57,11 @@ def boas_vindas():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+## ----------------------------------------------------------
+## configuração de IP e porta
+## ----------------------------------------------------------
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)

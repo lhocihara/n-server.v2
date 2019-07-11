@@ -1,4 +1,4 @@
 import os
 from main import app
 
-app.run(debug=False, use_reloader=True)
+app.run(debug=True, use_reloader=True)

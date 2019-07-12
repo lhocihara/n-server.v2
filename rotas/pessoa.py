@@ -86,10 +86,12 @@ def Cadastrar_Pessoa():
         pessoa_gerada = dbcol.insert_one(request.json)
         
         json_retorno = {
-            'msg': 'Cadastro realizado com sucesso',
-            'cod': '201',
-            'segredo': str(pessoa_gerada.inserted_id),
-            'nome_usuario': str(request.json['nome_completo'])
+            "mensagem": "Cadastro realizado com sucesso.",
+            "codigo": 201,
+            "objeto": {
+                "segredo": str(pessoa_gerada.inserted_id),
+                "nome_usuario": str(request.json["nome_completo"])
+            }
         }
 
         return jsonify(json_retorno)

@@ -51,6 +51,11 @@ def validation_error(e):
 def boas_vindas():
     return render_template("bem_vindos.html")
 
+##Definição do endpoint
+@app.route("/panic", methods=['POST'])
+def nao_entre_em_panico():
+    return jsonify({"message": "Nao entre em panico, isso é soh um retorno padrao"})
+
 ## ----------------------------------------------------------
 ## Endpoint index
 ## ----------------------------------------------------------

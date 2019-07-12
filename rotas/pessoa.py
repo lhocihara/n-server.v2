@@ -76,7 +76,7 @@ def Cadastrar_Pessoa():
     
     pessoa_request = request.json
     
-    # print("\n[Requisição-POST] /pessoa:\n" + str(pessoa_request) + "\n")
+    print("\n[Requisição-POST] /pessoa:\n" + str(pessoa_request) + "\n")
 
     try:
         retorno = orq.cadastrar_pessoa(pessoa_request)
@@ -87,7 +87,7 @@ def Cadastrar_Pessoa():
             'segredo': str(retorno),
             'nome_usuario': str(pessoa_request['nome'])
         }
-        # print("retorno:" + str(json_retorno))
+        print("retorno:" + str(json_retorno))
         return jsonify(json_retorno)
     except StatusRetorno as e:
         return e.errors

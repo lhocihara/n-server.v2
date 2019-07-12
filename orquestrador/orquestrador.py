@@ -8,7 +8,7 @@ from handlers.status_retorno import StatusRetorno
 
 class Orquestrador(object):
     def __init__(self):
-        # print("\n[Orquestrador] instanciado com sucesso!\n")
+        print("\n[Orquestrador] instanciado com sucesso!\n")
         
         # Carregando com paramêtros de acesso para desenvolvedor
         usuario_banco = urllib.parse.quote_plus('dev_connect')

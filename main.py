@@ -16,7 +16,7 @@ from rotas.pessoa import blueprint_pessoa
 ## ----------------------------------------------------------
 ## Instanciando a API
 ## ----------------------------------------------------------
-app = Flask(__name__)
+app = Flask("n-server")
 app.config.from_object('settings')
 
 

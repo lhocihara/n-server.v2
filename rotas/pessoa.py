@@ -1,7 +1,7 @@
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
 import pymongo
-
+import dns
 
 from orquestrador.orquestrador import Orquestrador 
 
@@ -78,7 +78,6 @@ def Cadastrar_Pessoa():
     print(pessoa_request)
 
     try:
-        raise BaseException("eae menó")
         orq.cadastrar_pessoa(pessoa_request)
         
         json_retorno = {

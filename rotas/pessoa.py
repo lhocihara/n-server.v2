@@ -76,7 +76,7 @@ def Cadastrar_Pessoa():
     
     pessoa_request = request.json
     
-    print("\n[REQUISIÇÃO] Cadastrar pessoa:\n" + str(pessoa_request) + "\n")
+    print("\n[Requisição-POST] /pessoa:\n" + str(pessoa_request) + "\n")
 
     try:
         retorno = orq.cadastrar_pessoa(pessoa_request)

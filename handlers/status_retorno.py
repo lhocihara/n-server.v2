@@ -23,7 +23,7 @@ class StatusRetorno(Exception):
     self.errors = self.retorno()
     
   def retorno(self):
-    print("\n[Status retorno] Código de retorno:\n" + str({
+    print("\n[Status retorno] JSON de retorno:\n" + str({
       "codigo": self.codigo,
       "mensagem": self.mensagem,
       "objeto": self.objeto,

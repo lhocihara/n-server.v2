@@ -76,7 +76,11 @@ def Cadastrar_Pessoa():
     pessoa = request.json
     
     print(pessoa)
-    return False
+    json_retorno = {
+            "mensagem": "oi.",
+            "codigo": 200
+        }
+    return jsonify(json_retorno)
 
 
     # anterior -------------------------------------------------

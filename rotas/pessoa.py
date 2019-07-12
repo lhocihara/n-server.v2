@@ -3,6 +3,10 @@ from flask import Flask, Blueprint, request, jsonify
 import pymongo
 
 
+from orquestrador.orquestrador import Orquestrador 
+
+orq = Orquestrador()
+
 ## ----------------------------------------------------------
 ## Definição do Blueprint
 ## ----------------------------------------------------------
@@ -68,6 +72,15 @@ schemaCadastroPessoa = {
 @blueprint_pessoa.route("/pessoa", methods=['POST'])
 @schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
+    
+    pessoa = request.json
+    
+    print(pessoa)
+    return False
+
+
+    # anterior -------------------------------------------------
+    
     ## ----------------------------------------------------------
     ## Conexão com MongoDB
     ## ----------------------------------------------------------
@@ -77,10 +90,19 @@ def Cadastrar_Pessoa():
 
     ## Requisição do Json
     if not request.json:
-        return 'ERRO 400, requisição não encontrada'
+        json_retorno = {
+            "mensagem": "Requisição não encontrada.",
+            "codigo": 400
+        }
+        return jsonify(json_retorno)
+        # return 'ERRO 400, requisição não encontrada'
     ## Verifica se o CPF já existe no Banco
     if dbcol.find({'cpf': dict(request.json)['cpf']}).limit(1).count() > 0:
-        return 'Já existe um cadastro com este CPF em nossa base de dados'
+        json_retorno = {
+            "mensagem": "Já existe um cadastro com este CPF em nossa base de dados",
+            "codigo": "SI-1"
+        }
+        return jsonify(json_retorno)
     ## Caso CPF não exista no banco, realiza o cadastro/insere dados no banco
     else:
         pessoa_gerada = dbcol.insert_one(request.json)

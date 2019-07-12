@@ -1,6 +1,6 @@
 from flask import jsonify
 
-class StatusRetorno(Exception):
+class StatusInterno(Exception):
   def __init__(self, codigo_status, objeto=None):
     # self.dados = ""
     
@@ -17,6 +17,10 @@ class StatusRetorno(Exception):
       self.mensagem = "Erro acessar coleção."
     elif codigo_status == 'SI-5':
       self.mensagem = "Dado existente no banco de dados."
+    elif codigo_status == 'SI-6':
+      self.mensagem = "Erro ao logar pessoa."
+    elif codigo_status == 'SI-7':
+      self.mensagem = "Método de login não foi identificado."
     else: 
       self.mensagem = "Situação não catalogada."
     

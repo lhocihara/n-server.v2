@@ -4,7 +4,7 @@ import pymongo
 import dns
 
 from orquestrador.orquestrador import Orquestrador 
-from handlers.status_retorno import StatusRetorno
+from biblioteca_retornos.status_retorno import StatusRetorno
 
 orq = Orquestrador()
 

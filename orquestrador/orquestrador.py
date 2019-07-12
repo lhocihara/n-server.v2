@@ -3,7 +3,7 @@ from pymongo import MongoClient # Para acessar o MongoDB
 from bson.objectid import ObjectId
 import urllib.parse # (OPCIONAL) Para criar texto de URI 
 
-from handlers.status_retorno import StatusRetorno
+from biblioteca_retornos.status_retorno import StatusInterno
 
 class Orquestrador(object):
     def __init__(self):
@@ -21,14 +21,14 @@ class Orquestrador(object):
 
     def cadastrar_pessoa(self, pessoa):
         if self.verificar_cpf(pessoa["cpf"]):
-            raise StatusRetorno('SI-1', {'cpf': str(pessoa["cpf"])})
+            raise StatusInterno('SI-1', {'cpf': str(pessoa["cpf"])})
         if self.verificar_email(pessoa["email"]):
-            raise StatusRetorno('SI-2', {'email': str(pessoa["email"])})
+            raise StatusInterno('SI-2', {'email': str(pessoa["email"])})
 
         try:
             colecao_pessoas = self.conexao_bd.Pessoas
         except:
-            raise StatusRetorno('SI-4')
+            raise StatusInterno('SI-4')
         
         try:
             #Chamada de função para inserir documento de cadastro
@@ -40,7 +40,7 @@ class Orquestrador(object):
 
             return(str(pessoa_id.inserted_id))
         except:
-            raise StatusRetorno('SI-3', {'pessoa': pessoa})
+            raise StatusInterno('SI-3', {'pessoa': pessoa})
 
     def adcionar_dados_pessoa(self, pessoa):
         # simulando retorno OK
@@ -63,8 +63,8 @@ class Orquestrador(object):
             metodo_login = "email"
         # Login com identificador errado
         else:
-            print("[Orquestrador.ERRO] Método de login não identificou o método de login.")
-            return False
+            print("[Orquestrador.ERRO] Método de login não foi identificado.")
+            raise StatusInterno('SI-7', {"metodo_login": tipo, metodo_login: valor_login, 'senha': senha})
 
         try:
             if(self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]}).limit(1).count() > 0):
@@ -78,10 +78,8 @@ class Orquestrador(object):
             else:
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")
                 return None
-        except Exception as e:
-            print("[Orquestrador.ERRO] Erro durante a execução do comando de seleção.")
-            raise str(e)
-            #   raise Exception(CodigoStatusHttp(500).retorno())
+        except:
+            raise StatusInterno('SI-6', {metodo_login: valor_login, 'senha': senha})
 
     def verificar_id_usuario(self,pessoa_id_usuario):
         try:

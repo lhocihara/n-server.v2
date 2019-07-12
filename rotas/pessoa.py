@@ -89,7 +89,7 @@ def Cadastrar_Pessoa():
             'msg': 'Cadastro realizado com sucesso',
             'cod': '201',
             'segredo': id_segredo_gerado,
-            'nome_usuario': str(request.json['nome'])
+            'nome_usuario': str(request.json['nome_completo'])
         }
 
         return jsonify(json_retorno)

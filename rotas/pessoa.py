@@ -78,7 +78,7 @@ def Cadastrar_Pessoa():
     print(pessoa_request)
 
     try:
-        raise str("eae menó")
+        raise BaseException("eae menó")
         orq.cadastrar_pessoa(pessoa_request)
         
         json_retorno = {

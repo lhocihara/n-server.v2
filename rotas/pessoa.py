@@ -65,7 +65,7 @@ schemaCadastroPessoa = {
 ## ----------------------------------------------------------
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
-@blueprint_pessoa.route("/pessoa", methods=['PUT'])
+@blueprint_pessoa.route("/pessoa", methods=['POST'])
 @schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
     ## ----------------------------------------------------------

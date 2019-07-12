@@ -36,13 +36,14 @@ class Orquestrador(object):
             #Chamada de função para inserir documento de cadastro
             pessoa_id = colecao_pessoas.insert_one(pessoa)
 
-            # # Chama função de cadastro do Blockchain
+            
+            # Chama função de cadastro do Blockchain
             print("\n[Orquestrador] pessoa cadastrada com sucesso!\n")
             print("id:" + str(pessoa_id.inserted_id))
             return(str(pessoa_id.inserted_id))
         except Exception as e:
             print("[Orquestrador] Falha ao executar comando de cadastro de pessoa.")
-            raise str(e)
+            raise StatusRetorno('SI-3', {'pessoa': pessoa})
         #   raise Exception(CodigoStatusHttp(500).retorno())
 
     def adcionar_dados_pessoa(self, pessoa):

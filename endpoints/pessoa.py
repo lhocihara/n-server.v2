@@ -15,13 +15,24 @@ schema = JsonSchema(pessoa_flask)
 schemaCadastroPessoa = {
     "title": "Pessoa",
     "type": "object",
-    "required": ["nome", "cpf", "data_nasc", "genero", "email", "senha"],
+    "required": ["nome_completo", "cpf", "data_nasc", "genero", "email", "senha"],
     "properties": {
-        "nome": {
-            "type": "string", "pattern": "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
+        "nome_completo": {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
         },
         "cpf": {
             "type": "string", "minLength": 11, "maxLength": 11
+        },
+        "rg:": {
+            "type": "object",
+            "properties": {
+                "emissor":{
+                    "type": "string", "minLength": 3, "maxLength": 3
+                },
+                "numero": {
+                    "type": "string", "maxLength": 14
+                }
+            }
         },
         "data_nasc": {
             "type": "string", "format": "date-time"
@@ -33,7 +44,7 @@ schemaCadastroPessoa = {
             "type": "string", "format": "email"
         },
         "senha": {
-            "type": "string", "minLength": 8, "maxLength": 30 #Adicionar criptografia
+            "type": "string", "minLength": 8 #Adicionar criptografia
         }
     }
 }

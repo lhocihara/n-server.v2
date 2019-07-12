@@ -6,7 +6,7 @@ import pymongo
 ## Definição do Blueprint e Schema
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
-schema = JsonSchema(pessoa_blue)
+schema = JsonSchema()
 
 ## ----------------------------------------------------------
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP

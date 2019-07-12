@@ -23,7 +23,7 @@ app.config.from_object('settings')
 ## ----------------------------------------------------------
 ## Lista de Blueprints
 ## ----------------------------------------------------------
-app.register_blueprint(blueprint_pessoa,url_prefix="/pessoa")
+app.register_blueprint(blueprint_pessoa)#,url_prefix="/pessoa")
 
 ##app.config['MONGO_DBNAME'] = 'TCC.Pessoas'
 ##app.config['MONGO_URI'] = 'mongodb+srv://admin_connect:<#_n2noficial_#>@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority'

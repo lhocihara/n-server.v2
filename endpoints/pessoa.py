@@ -1,12 +1,13 @@
 from flask_json_schema import JsonSchema, JsonValidationError
-from flask import Blueprint, request, jsonify
+from flask import Flask, Blueprint, request, jsonify
 import pymongo
 
 ## ----------------------------------------------------------
 ## Definição do Blueprint e Schema
 ## ----------------------------------------------------------
-pessoa_blue = Blueprint("pessoa", __name__)
-schema = JsonSchema(__name__)
+pessoa_flask = Flask("pessoa")
+pessoa_blue = Blueprint("pessoa",__name__)
+schema = JsonSchema(pessoa_flask)
 
 ## ----------------------------------------------------------
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP

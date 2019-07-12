@@ -9,7 +9,7 @@ data = {
     "email": "Sif@gmail.com",
     "senha": "75f7313c20144e39edcf57a14733d074aee0c482320d5178ee0ef2f2608c2996"
 }
-for i in range(0,10):
+for i in range(0,100):
     
     r = requests.post("http://n-server-v2.herokuapp.com/pessoa", data=json.dumps(data),headers=headers)
     print (r.text)

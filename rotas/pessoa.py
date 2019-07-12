@@ -13,7 +13,7 @@ from orquestrador.orquestrador import Orquestrador
 ## ----------------------------------------------------------
 ## Importação dos Objetos de tratamento de erros
 ## ----------------------------------------------------------
-from biblioteca_retornos.status_interno import StatusInterno
+from biblioteca_retornos.status_interno import ListaStatusInterno
 ## ----------------------------------------------------------
 ## Importação dos schemas referentes a Pessoa
 ## ----------------------------------------------------------

@@ -64,5 +64,5 @@ def Cadastrar_Pessoa():
             }
         }
         return jsonify(json_retorno)
-    except StatusInterno as e:
+    except ListaStatusInterno as e:
         return e.errors

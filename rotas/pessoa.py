@@ -4,6 +4,7 @@ import pymongo
 import dns
 
 from orquestrador.orquestrador import Orquestrador 
+from handlers.status_retorno import StatusRetorno
 
 orq = Orquestrador()
 
@@ -75,55 +76,18 @@ def Cadastrar_Pessoa():
     
     pessoa_request = request.json
     
-    print(pessoa_request)
+    print("\n[REQUISIÇÃO] Cadastrar pessoa:\n" + str(pessoa_request) + "\n")
 
     try:
-        orq.cadastrar_pessoa(pessoa_request)
+        retorno = orq.cadastrar_pessoa(pessoa_request)
         
         json_retorno = {
-                "mensagem": "oi.",
-                "codigo": 200
-            }
-        return jsonify(json_retorno)
-    except Exception as e:
-        return jsonify(str(e))
-
-    # anterior -------------------------------------------------
-    
-    ## ----------------------------------------------------------
-    ## Conexão com MongoDB
-    ## ----------------------------------------------------------
-    mongo = pymongo.MongoClient("mongodb+srv://dev_connect:rgPuzhTgc8HAHFlV@cluster0-hygoa.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db = pymongo.database.Database(mongo, 'TCC')
-    dbcol = pymongo.collection.Collection(db, 'Pessoas')
-
-    ## Requisição do Json
-    if not request.json:
-        json_retorno = {
-            "mensagem": "Requisição não encontrada.",
-            "codigo": 400
+            'msg': 'Cadastro realizado com sucesso',
+            'cod': 201,
+            'segredo': str(retorno),
+            'nome_usuario': str(pessoa_request['nome'])
         }
+        print("retorno:" + str(json_retorno))
         return jsonify(json_retorno)
-        # return 'ERRO 400, requisição não encontrada'
-    ## Verifica se o CPF já existe no Banco
-    if dbcol.find({'cpf': dict(request.json)['cpf']}).limit(1).count() > 0:
-        json_retorno = {
-            "mensagem": "Já existe um cadastro com este CPF em nossa base de dados",
-            "codigo": "SI-1"
-        }
-        return jsonify(json_retorno)
-    ## Caso CPF não exista no banco, realiza o cadastro/insere dados no banco
-    else:
-        pessoa_gerada = dbcol.insert_one(request.json)
-        
-        json_retorno = {
-            "mensagem": "Cadastro realizado com sucesso.",
-            "codigo": 201,
-            "objeto": {
-                "segredo": str(pessoa_gerada.inserted_id),
-                "nome_usuario": str(request.json["nome_completo"])
-            }
-        }
-
-        return jsonify(json_retorno)
-        # return ('Cadastro realizado com sucesso, ' + str(request.json['nome']))
+    except StatusRetorno as e:
+        return e.errors

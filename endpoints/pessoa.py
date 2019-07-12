@@ -1,12 +1,12 @@
-from flask_json_schema import JsonSchema
-from flask import Blueprint, request
+from flask_json_schema import JsonSchema, JsonValidationError
+from flask import Blueprint, request, jsonify
 import pymongo
 
 ## ----------------------------------------------------------
 ## Definição do Blueprint e Schema
 ## ----------------------------------------------------------
 pessoa_blue = Blueprint("pessoa", __name__)
-# schema = JsonSchema()
+schema = JsonSchema(pessoa_blue)
 
 ## ----------------------------------------------------------
 ## Definição do schema de validação do Json a ser recebido pela requisição HTTP
@@ -49,7 +49,7 @@ schemaCadastroPessoa = {
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
 @pessoa_blue.route("/cadastro", methods=['POST'])
-# @schema.validate(schemaCadastroPessoa)
+@schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
     ## ----------------------------------------------------------
     ## Conexão com MongoDB
@@ -66,5 +66,14 @@ def Cadastrar_Pessoa():
         return 'Já existe um cadastro com este CPF em nossa base de dados'
     ## Caso CPF não exista no banco, realiza o cadastro/insere dados no banco
     else:
-        dbcol.insert_one(request.json)
-        return ('Cadastro realizado com sucesso, ' + str(request.json['nome']))
+        id_segredo_gerado = dbcol.insert_one(request.json)
+        
+        json_retorno = {
+            'msg': 'Cadastro realizado com sucesso',
+            'cod': '201',
+            'segredo': id_segredo_gerado,
+            'nome_usuario': str(request.json['nome'])
+        }
+
+        return jsonify(json_retorno)
+        # return ('Cadastro realizado com sucesso, ' + str(request.json['nome']))

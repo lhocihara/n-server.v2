@@ -73,15 +73,21 @@ schemaCadastroPessoa = {
 @schema.validate(schemaCadastroPessoa)
 def Cadastrar_Pessoa():
     
-    pessoa = request.json
+    pessoa_request = request.json
     
-    print(pessoa)
-    json_retorno = {
-            "mensagem": "oi.",
-            "codigo": 200
-        }
-    return jsonify(json_retorno)
+    print(pessoa_request)
 
+    try:
+        raise str("eae menó")
+        orq.cadastrar_pessoa(pessoa_request)
+        
+        json_retorno = {
+                "mensagem": "oi.",
+                "codigo": 200
+            }
+        return jsonify(json_retorno)
+    except Exception as e:
+        return jsonify(e)
 
     # anterior -------------------------------------------------
     

@@ -28,30 +28,30 @@ class Orquestrador(object):
       raise str(e)
     #   raise Exception(CodigoStatusHttp(500).retorno())
     
-    bd_doc = "{"
+    # bd_doc = "{"
 
-    for i,k in enumerate( pessoa.lista_chaves_encontradas):
-      if(isinstance(getattr(pessoa, k), str)):
-        v_formatado = str('"' + getattr(pessoa, k)+ '"')
-      else:
-        v_formatado = str(getattr(pessoa, k))
+    # for i,k in enumerate( pessoa.lista_chaves_encontradas):
+    #   if(isinstance(getattr(pessoa, k), str)):
+    #     v_formatado = str('"' + getattr(pessoa, k)+ '"')
+    #   else:
+    #     v_formatado = str(getattr(pessoa, k))
       
-      if len(pessoa.lista_chaves_encontradas) -1 != i :
-        bd_doc += str('"' + k + '":' + str(v_formatado) + ",")
-      else:
-        bd_doc += str('"' + k + '":' + str(v_formatado))
+    #   if len(pessoa.lista_chaves_encontradas) -1 != i :
+    #     bd_doc += str('"' + k + '":' + str(v_formatado) + ",")
+    #   else:
+    #     bd_doc += str('"' + k + '":' + str(v_formatado))
     
-    bd_doc += "}"
+    # bd_doc += "}"
     
     # # Linha para ser aplicada quando a validação por e-mail for implementada
     #bd_doc += str(" 'acesso_validado': 0")
     #print(k, ': ', getattr(pessoa, k))
     
-    print('\n[Orquestrador] documento de cadastro em formato json: \n' + bd_doc + "\n")
+    # print('\n[Orquestrador] documento de cadastro em formato json: \n' + bd_doc + "\n")
   
     try:
       #Chamada de função para inserir documento de cadastro
-      pessoa_id = colecao_pessoas.insert_one(json.loads(bd_doc))
+      pessoa_id = colecao_pessoas.insert_one(json.loads(pessoa))
 
        # # Chama função de cadastro do Blockchain
       print("\n[Orquestrador] pessoa cadastrada com sucesso!\n")

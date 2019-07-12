@@ -1,10 +1,24 @@
+## ----------------------------------------------------------
+## Importação dos módulos padrões
+## ----------------------------------------------------------
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
 import pymongo
 import dns
 
+## ----------------------------------------------------------
+## Importação do orquestrador da conexão com BD
+## ----------------------------------------------------------
 from orquestrador.orquestrador import Orquestrador 
-from biblioteca_retornos.status_retorno import StatusRetorno
+## ----------------------------------------------------------
+## Importação dos Objetos de tratamento de erros
+## ----------------------------------------------------------
+from biblioteca_retornos.status_interno import StatusInterno
+## ----------------------------------------------------------
+## Importação dos schemas referentes a Pessoa
+## ----------------------------------------------------------
+from schemas.pessoa import schemaCadastro
+
 
 orq = Orquestrador()
 
@@ -20,46 +34,6 @@ app = Flask("Pessoa")
 schema = JsonSchema(app)
 
 ## ----------------------------------------------------------
-## Definição do schema de validação do Json a ser recebido pela requisição HTTP
-## ----------------------------------------------------------
-schemaCadastroPessoa = {
-    "title": "Pessoa",
-    "type": "object",
-    "required": ["nome_completo", "cpf", "data_nasc", "genero", "email", "senha"],
-    "properties": {
-        "nome_completo": {
-            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
-        },
-        "cpf": {
-            "type": "string", "minLength": 11, "maxLength": 11
-        },
-        "rg:": {
-            "type": "object",
-            "properties": {
-                "emissor":{
-                    "type": "string", "minLength": 3, "maxLength": 3
-                },
-                "numero": {
-                    "type": "string", "maxLength": 14
-                }
-            }
-        },
-        "data_nasc": {
-            "type": "string", "format": "date-time"
-        },
-        "genero": {
-            "type": "string", "pattern": "^[M|F|D]$"
-        },
-        "email": {
-            "type": "string", "format": "email"
-        },
-        "senha": {
-            "type": "string", "minLength": 8 #Adicionar criptografia
-        }
-    }
-}
-
-## ----------------------------------------------------------
 ## Rotas dos serviços para o APP
 ## ----------------------------------------------------------
 ##
@@ -71,7 +45,7 @@ schemaCadastroPessoa = {
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
 @blueprint_pessoa.route("/pessoa", methods=['POST'])
-@schema.validate(schemaCadastroPessoa)
+@schema.validate(schemaCadastro)
 def Cadastrar_Pessoa():
     
     pessoa_request = request.json
@@ -90,5 +64,5 @@ def Cadastrar_Pessoa():
             }
         }
         return jsonify(json_retorno)
-    except StatusRetorno as e:
+    except StatusInterno as e:
         return e.errors

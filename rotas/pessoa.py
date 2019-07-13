@@ -50,8 +50,9 @@ schema = JsonSchema(app)
 def Cadastrar_Pessoa():
     """ Endpoint responsável por cadastrar pessoas dentro da base de dados.
         
-        `Requisição:` Deve ser feita com base no `SchemaCadastro`
-        `Resposta`: Será com base na `Classe biblioteca_respostas > StatusInternos` caso houver `erros internos`, ou na `Classe biblioteca_respostas > Respostas`  
+        `Requisição:` Deve ser feita com base no `SchemaCadastro`.
+
+        `Resposta:` Será com base na `Classe StatusInternos` caso houver `erros internos`, ou na `Classe RespostasAPI` para formatar as referidas respostas.
     """
     pessoa_request = request.json
     

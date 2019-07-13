@@ -2,14 +2,12 @@
 from flask import jsonify
 
 class RespostasAPI():
-  def __call__(self, mensagem_resposta, objeto=None):    
+  def __init__(self, mensagem_resposta, objeto=None):    
     self.codigo = 201
     self.mensagem = mensagem_resposta
     self.objeto = objeto    
-    
-    return self.retorno()
   
-  def retorno(self):
+  def __call__(self):
     print("\n[Status retorno] JSON de retorno:\n" + str({
       "codigo": self.codigo,
       "mensagem": self.mensagem,

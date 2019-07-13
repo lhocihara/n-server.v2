@@ -5,7 +5,9 @@ class RespostasAPI():
   def __init__(self, mensagem_resposta, objeto=None):    
     self.codigo = 201
     self.mensagem = mensagem_resposta
-    self.objeto = objeto    
+    self.objeto = objeto
+
+    self.json  = self.retorno() 
   
   def retorno(self):
     print("\n[Status retorno] JSON de retorno:\n" + str({

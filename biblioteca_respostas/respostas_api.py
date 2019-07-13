@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify
 
-class RespostasAPI:
+class RespostasAPI():
   def __init__(self, mensagem_resposta, objeto=None):    
     self.codigo = 201
     self.mensagem = mensagem_resposta

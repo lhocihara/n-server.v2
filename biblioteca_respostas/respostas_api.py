@@ -7,7 +7,11 @@ class RespostasAPI():
     self.mensagem = mensagem_resposta
     self.objeto = objeto    
   
-  def __call__(self):
+  def __call__(self, mensagem_resposta, objeto=None):
+    self.codigo = 201
+    self.mensagem = mensagem_resposta
+    self.objeto = objeto
+    
     print("\n[Status retorno] JSON de retorno:\n" + str({
       "codigo": self.codigo,
       "mensagem": self.mensagem,

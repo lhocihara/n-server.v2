@@ -7,7 +7,7 @@ class RespostasAPI():
     self.mensagem = mensagem_resposta
     self.objeto = objeto
 
-    self.json  = self.retorno() 
+    self.JSON  = self.retorno() 
   
   def retorno(self):
     print("\n[Status retorno] JSON de retorno:\n" + str({

@@ -4,7 +4,7 @@ from pymongo import MongoClient # Para acessar o MongoDB
 from bson.objectid import ObjectId
 import urllib.parse # (OPCIONAL) Para criar texto de URI 
 
-from biblioteca_retornos.status_interno import ListaStatusInterno
+from biblioteca_respostas.status_internos import StatusInternos
 
 class Orquestrador(object):
     def __init__(self):

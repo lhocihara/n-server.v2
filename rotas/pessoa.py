@@ -13,7 +13,8 @@ from orquestrador.orquestrador import Orquestrador
 ## ----------------------------------------------------------
 ## Importação dos Objetos de tratamento de erros
 ## ----------------------------------------------------------
-from biblioteca_retornos.status_interno import ListaStatusInterno
+from biblioteca_respostas.status_internos import StatusInternos
+from biblioteca_respostas.respostas_api import RespostasAPI
 ## ----------------------------------------------------------
 ## Importação dos schemas referentes a Pessoa
 ## ----------------------------------------------------------
@@ -47,7 +48,11 @@ schema = JsonSchema(app)
 @blueprint_pessoa.route("/pessoa", methods=['POST'])
 @schema.validate(schemaCadastro)
 def Cadastrar_Pessoa():
-    
+    """ Endpoint responsável por cadastrar pessoas dentro da base de dados.
+        
+        `Requisição:` Deve ser feita com base no `SchemaCadastro`
+        `Resposta`: Será com base na `Classe biblioteca_respostas > StatusInternos` caso houver `erros internos`, ou na `Classe biblioteca_respostas > Respostas`  
+    """
     pessoa_request = request.json
     
     print("\n[Requisição-POST] /pessoa:\n" + str(pessoa_request) + "\n")
@@ -55,14 +60,13 @@ def Cadastrar_Pessoa():
     try:
         retorno_id = orq.cadastrar_pessoa(pessoa_request)
         
-        json_retorno = {
-            'mensagem': 'Cadastro realizado com sucesso',
-            'codigo': 201,
-            'objeto': {
-                'segredo': str(retorno_id),
-                'nome_usuario': str(pessoa_request['nome_completo'])
-            }
-        }
-        return jsonify(json_retorno)
-    except ListaStatusInterno as e:
+        json_retorno = RespostasAPI('Cadastro realizado com sucesso', 
+                {
+                    'segredo': str(retorno_id),
+                    'nome_usuario': str(pessoa_request['nome_completo'])
+                }
+            )
+
+        return json_retorno
+    except StatusInternos as e:
         return e.errors

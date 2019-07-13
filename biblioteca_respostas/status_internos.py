@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify
 
-class ListaStatusInterno(Exception):
+class StatusInternos(Exception):
   def __init__(self, codigo_status, objeto=None):
     # self.dados = ""
     

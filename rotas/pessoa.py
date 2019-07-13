@@ -66,7 +66,7 @@ def Cadastrar_Pessoa():
                     'segredo': str(retorno_id),
                     'nome_usuario': str(pessoa_request['nome_completo'])
                 }
-            )
+            ).retorno()
 
         return json_retorno
     except StatusInternos as e:

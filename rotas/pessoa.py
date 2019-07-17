@@ -18,7 +18,7 @@ from biblioteca_respostas.respostas_api import RespostasAPI
 ## ----------------------------------------------------------
 ## Importação dos schemas referentes a Pessoa
 ## ----------------------------------------------------------
-from schemas.pessoa import schemaCadastro
+from schemas.pessoa import schemaCadastro,schemaLoginPessoa
 
 
 orq = Orquestrador()
@@ -45,7 +45,7 @@ schema = JsonSchema(app)
 ## ----------------------------------------------------------
 ## Endpoint de cadastro inicial de pessoas
 ## ----------------------------------------------------------
-@blueprint_pessoa.route("/pessoa", methods=['POST'])
+@blueprint_pessoa.route("/cadastro", methods=['POST'])
 @schema.validate(schemaCadastro)
 def Cadastrar_Pessoa():
     """ Endpoint responsável por cadastrar pessoas dentro da base de dados.
@@ -56,7 +56,7 @@ def Cadastrar_Pessoa():
     """
     pessoa_request = request.json
     
-    print("\n[Requisição-POST] /pessoa:\n" + str(pessoa_request) + "\n")
+    print("\n[Requisição-POST] /pessoa/cadastro:\n" + str(pessoa_request) + "\n")
 
     try:
         retorno_id = orq.cadastrar_pessoa(pessoa_request)
@@ -71,3 +71,35 @@ def Cadastrar_Pessoa():
         return json_retorno
     except StatusInternos as e:
         return e.errors
+
+
+## ----------------------------------------------------------
+## Endpoint de cadastro inicial de pessoas
+## ----------------------------------------------------------
+@blueprint_pessoa.route("/login", methods=['POST'])
+@schema.validate(schemaLoginPessoa)
+def Logar_Pessoa():
+
+  login_request = request.json
+
+  print("\n[Requisição-POST] /pessoa/login:\n" + str(login_request) + "\n")
+  
+  try:
+      metodo_entrada = login_request['metodo_entrada']
+      senha = login_request['senha']
+      tipo_entrada = login_request['tipo_entrada']
+     
+      retorno_id = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
+    #   retorno = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
+
+      json_retorno = RespostasAPI('Login realizado com sucesso', 
+        {
+            'segredo': str(retorno_id)
+            # 'segredo': str(retorno.segredo),
+            # 'nome_usuario': str(retorno.nome_usuario),
+        }
+      ).JSON
+
+      return json_retorno
+  except StatusInternos as e:
+      return e.errors

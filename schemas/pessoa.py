@@ -38,3 +38,20 @@ schemaCadastro = {
         }
     }
 }
+
+schemaLoginPessoa = {
+  "title" : "Login de Pessoa",
+  "type" : "object",
+  "required" : ["metodo_entrada", "senha", "tipo_entrada"],
+  "properties" : {
+    "metodo_entrada" : {
+      "type" : "string"
+    },
+    "senha" : {
+      "type" : "string"
+    },
+    "tipo_entrada" : {
+      "type" : "string", "pattern" : "^[0|1]$"
+    }
+  }
+}

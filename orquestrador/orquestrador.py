@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from flask import jsonify
 from pymongo import MongoClient # Para acessar o MongoDB
 from bson.objectid import ObjectId
 import urllib.parse # (OPCIONAL) Para criar texto de URI 
@@ -79,12 +80,11 @@ class Orquestrador(object):
                     "Usuario_nome": str(dados_pessoa[0]['nome_completo'])
                   }))
 
-                return (
-                  {
-                    "segredo": str(dados_pessoa[0]['_id']),
-                    "usuario_nome": str(dados_pessoa[0]['nome_completo'])
-                  }
-                )
+                return ({
+                    segredo: str(dados_pessoa[0]['_id']),
+                    usuario_nome: str(dados_pessoa[0]['nome_completo'])
+                  })
+                
             else:
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")
                 raise StatusInternos

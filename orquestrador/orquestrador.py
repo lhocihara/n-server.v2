@@ -69,13 +69,22 @@ class Orquestrador(object):
 
         try:
             if(self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]}).limit(1).count() > 0):
-                print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' encontrado na coleção de Pessoas, exibindo documento retornado:")
+                print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' encontrado na coleção de Pessoas, exibindo documento retornado:")                
+                
 
                 dados_pessoa = self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]})
                 
-                print(str(dados_pessoa[0]['_id']))
+                print(str({
+                    "Segredo": str(dados_pessoa[0]['_id']),
+                    "Usuario_nome": str(dados_pessoa[0]['nome_completo'])
+                  }))
 
-                return str(dados_pessoa[0]['_id'])
+                return (
+                  {
+                    "Segredo": str(dados_pessoa[0]['_id']),
+                    "Usuario_nome": str(dados_pessoa[0]['nome_completo'])
+                  }
+                )
             else:
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")
                 raise StatusInternos

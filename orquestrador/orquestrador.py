@@ -82,7 +82,7 @@ class Orquestrador(object):
 
                 return {
                     'segredo': str(dados_pessoa[0]['_id']),
-                    'usuario_nome': str(dados_pessoa[0]['nome_completo'])
+                    'nome_usuario': str(dados_pessoa[0]['nome_completo'])
                 }
                 
             else:

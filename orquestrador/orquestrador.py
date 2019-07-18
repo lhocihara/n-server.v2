@@ -80,10 +80,10 @@ class Orquestrador(object):
                     "usuario_nome": str(dados_pessoa[0]['nome_completo'])
                   }))
 
-                return jsonify(
-                    segredo= str(dados_pessoa[0]['_id']),
-                    usuario_nome= str(dados_pessoa[0]['nome_completo'])
-                  )
+                return {
+                    'segredo': str(dados_pessoa[0]['_id']),
+                    'usuario_nome': str(dados_pessoa[0]['nome_completo'])
+                }
                 
             else:
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")

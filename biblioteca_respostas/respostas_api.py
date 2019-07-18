@@ -10,16 +10,30 @@ class RespostasAPI():
     self.JSON  = self.retorno() 
   
   def retorno(self):
-    print("\n[Status retorno] JSON de retorno:\n" + str({
-      "codigo": self.codigo,
-      "mensagem": self.mensagem,
-      "objeto": self.objeto,
-      "timestamp": "0000-00-00 00000000000"
-    }) + "\n")
+    if (self.objeto):
+      print("\n[Retorno API] JSON de retorno: \n" + str({
+        "codigo": self.codigo,
+        "mensagem": self.mensagem,
+        "objeto": self.objeto,
+        "timestamp": "0000-00-00 00000000000"
+      }) + "\n")
+
     
-    return jsonify(
-      codigo= self.codigo,
-      mensagem= self.mensagem,
-      objeto= self.objeto,
-      timestamp= "0000-00-00 00000000000"
-    )
+      return jsonify(
+        codigo= self.codigo,
+        mensagem= self.mensagem,
+        objeto= self.objeto,
+        timestamp= "0000-00-00 00000000000"
+      )
+    else:
+      print("\n[Retorno API] JSON de retorno: \n" + str({
+        "codigo": self.codigo,
+        "mensagem": self.mensagem,
+        "timestamp": "0000-00-00 00000000000"
+      }) + "\n")
+
+      return jsonify(
+        codigo= self.codigo,
+        mensagem= self.mensagem, 
+        timestamp= "0000-00-00 00000000000"
+      )

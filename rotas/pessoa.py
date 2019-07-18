@@ -94,8 +94,8 @@ def Logar_Pessoa():
         print(retorno)
         json_retorno = RespostasAPI('Login realizado com sucesso',
         {
-                'segredo': str(retorno["segredo"]),
-                'nome_usuario': str(retorno["nome_usuario"]),
+                'segredo': retorno.segredo,
+                'nome_usuario': retorno.nome_usuario,
         }
         ).JSON
 

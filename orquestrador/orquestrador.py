@@ -78,7 +78,7 @@ class Orquestrador(object):
                 return str(dados_pessoa[0]['_id'])
             else:
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")
-                raise StatusInternos('SI-8', {metodo_login: valor_login, 'senha': senha})
+                raise StatusInternos
         except:
             raise StatusInternos('SI-6', {metodo_login: valor_login, 'senha': senha})
 

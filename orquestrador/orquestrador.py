@@ -80,7 +80,7 @@ class Orquestrador(object):
                 print("[Orquestrador] "+ metodo_login + ": '"+ valor_login +"' não encontrado na coleção de Pessoas.")
                 raise StatusInternos
         except:
-            raise StatusInternos('SI-6', {metodo_login: valor_login, 'senha': senha})
+            raise StatusInternos('SI-6')
 
     def verificar_id_usuario(self,pessoa_id_usuario):
         try:

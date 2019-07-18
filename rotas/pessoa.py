@@ -89,14 +89,12 @@ def Logar_Pessoa():
       senha = login_request['senha']
       tipo_entrada = login_request['tipo_entrada']
      
-      retorno_id = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
-    #   retorno = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
+      retorno = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
 
       json_retorno = RespostasAPI('Login realizado com sucesso', 
         {
-            'segredo': str(retorno_id)
-            # 'segredo': str(retorno.segredo),
-            # 'nome_usuario': str(retorno.nome_usuario),
+            'segredo': str(retorno["segredo"]),
+            'nome_usuario': str(retorno["nome_usuario"]),
         }
       ).JSON
 

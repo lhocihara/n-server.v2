@@ -22,6 +22,8 @@ class StatusInternos(Exception):
       self.mensagem = "Erro ao logar pessoa."
     elif codigo_status == 'SI-7':
       self.mensagem = "Método de login não foi identificado."
+    elif codigo_status == 'SI-8':
+      self.mensagem = "Login inválido."
     else: 
       self.mensagem = "Situação não catalogada."
     

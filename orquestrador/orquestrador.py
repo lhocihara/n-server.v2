@@ -205,12 +205,6 @@ class Orquestrador(object):
             except:
                 raise StatusInternos('SI-10', {'empresa': empresa})
 
-    def verificar_cnpj(self, empresa_cnpj):
-        if(self.conexao_bd.Empresas.find({"cnpj": empresa_cnpj}).limit(1).count() > 0):
-            return True
-        else:
-            return False
-
     def verificar_id_empresa(self, empresa_id_usuario):
         try:
             if(self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
@@ -231,4 +225,8 @@ class Orquestrador(object):
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
 
-    
+    def verificar_cnpj(self, empresa_cnpj):
+        if(self.conexao_bd.Empresas.find({"cnpj": empresa_cnpj}).limit(1).count() > 0):
+            return True
+        else:
+            return False

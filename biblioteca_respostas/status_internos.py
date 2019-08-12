@@ -24,6 +24,10 @@ class StatusInternos(Exception):
       self.mensagem = "Método de login não foi identificado."
     elif codigo_status == 'SI-8':
       self.mensagem = "Login inválido."
+    elif codigo_status == 'SI-9':
+      self.mensagem = "CNPJ existente na coleção de Empresas."
+    elif codigo_status == 'SI-10':
+      self.mensagem = "Erro ao cadastrar empresa."
     else: 
       self.mensagem = "Situação não catalogada."
     

@@ -11,7 +11,7 @@ from flask_json_schema import JsonSchema, JsonValidationError
 ## Importação dos módulos dos Blueprints
 ## ----------------------------------------------------------
 from rotas.pessoa import blueprint_pessoa
-
+from rotas.empresa import blueprint_empresa
 
 ## ----------------------------------------------------------
 ## Instanciando a API
@@ -23,8 +23,8 @@ app.config.from_object('settings')
 ## ----------------------------------------------------------
 ## Lista de Blueprints
 ## ----------------------------------------------------------
-app.register_blueprint(blueprint_pessoa, url_prefix="/pessoa")
-
+app.register_blueprint(blueprint_pessoa,url_prefix="/pessoa")
+app.register_blueprint(blueprint_empresa,url_prefix="/empresa")
 
 ## ----------------------------------------------------------
 ## Tratamento de erros na validação

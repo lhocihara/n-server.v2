@@ -39,6 +39,7 @@ schemaCadastro = {
     }
 }
 
+
 schemaLoginPessoa = {
   "title" : "Login de Pessoa",
   "type" : "object",
@@ -55,6 +56,8 @@ schemaLoginPessoa = {
     }
   }
 }
+
+
 
 schemaEdicao = {
         "type": "object",
@@ -139,6 +142,8 @@ schemaEdicao = {
       }
     }
   }
+
+
 
 schemaAdicao = {
         "type": "object",

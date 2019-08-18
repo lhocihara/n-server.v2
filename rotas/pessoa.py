@@ -102,3 +102,61 @@ def Logar_Pessoa():
         return json_retorno
     except StatusInternos as e:
         return e.errors
+ 
+
+## ---------------------------------------------------------
+## Endpoint de edição de dados de pessoas
+## ---------------------------------------------------------
+
+@blueprint_pessoa.route("/editar_dados", methods=['PUT'])
+@schema.validate(schemaEdicao)
+def Editar_Pessoa():
+
+    editar_request = request.json
+    segredo = editar_request['_id']
+    dados_editados = editar_request['dados_editados']
+
+    print("\n[Requisição-POST] /login:\n" + str(editar_request) + "\n")
+    try:
+        retorno = orq.editar_dados_pessoa(segredo, dados_editados)
+
+        json_retorno = RespostasAPI('Edição realizada com sucesso',
+                                {
+                                    'segredo': str(segredo),
+                                    'dados editados' : str(dados_editados)
+
+                                }
+                                ).JSON
+
+        return json_retorno
+
+    except StatusInternos as e:
+        return e.errors 
+    
+## ---------------------------------------------------------
+## Endpoint de adição de dados de pessoas
+## ---------------------------------------------------------
+    
+
+@blueprint_pessoa.route("/adicionar_dados", methods=['PUT'])
+@schema.validate(schemaEdicao)
+def AdicionarDados_Pessoa():
+
+    adicionar_dados_request = request.json
+    segredo = (adicionar_dados_request['_id'])
+    dados_novos = adicionar_dados_request['dados_novos']
+    print("\n[Requisição-PUT] /Adicionar_Dados:\n" + str(adicionar_dados_request) + "\n")
+    try:
+        orq.adicionar_dados_pessoa(segredo,dados_novos)
+
+        json_retorno = RespostasAPI('Adição realizada com sucesso',
+                                {
+                                    'segredo': str(segredo),
+                                    'dados adicionados': str(dados_novos),
+                                }
+                                ).JSON
+
+        return json_retorno
+
+    except StatusInternos as e:
+        return e.errors

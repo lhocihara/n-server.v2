@@ -23,37 +23,33 @@ class StatusInternos(Exception):
     elif codigo_status == 'SI-7':
       self.mensagem = "Método de login não foi identificado."
     elif codigo_status == 'SI-8':
-      self.mensagem = "Login inválido."
+      self.mensagem = "Pessoa não encontrada."
+    elif codigo_status == 'SI-9':
+      self.mensagem = "CNPJ existente na coleção de Empresas."
+    elif codigo_status == 'SI-10':
+      self.mensagem = "Erro ao cadastrar empresa."
+    elif codigo_status == 'SI-11':
+      self.mensagem = "Projeto existente na coleção de Projetos."
+    elif codigo_status == 'SI-12':
+      self.mensagem = "Erro ao cadastrar projeto."
+    elif codigo_status == 'SI-13': 
+      self.mensagem = "Empresa não encontrada." 
     else: 
       self.mensagem = "Situação não catalogada."
     
     self.errors = self.retorno()
     
   def retorno(self):
-    if (self.objeto):
-      print("\n[Status interno] JSON de retorno: \n" + str({
-        "codigo": self.codigo,
-        "mensagem": self.mensagem,
-        "objeto": self.objeto,
-        "timestamp": "0000-00-00 00000000000"
-      }) + "\n")
-
+    print("\n[Status retorno] JSON de retorno:\n" + str({
+      "codigo": self.codigo,
+      "mensagem": self.mensagem,
+      "objeto": self.objeto,
+      "timestamp": "0000-00-00 00000000000"
+    }) + "\n")
     
-      return jsonify(
-        codigo= self.codigo,
-        mensagem= self.mensagem,
-        objeto= self.objeto,
-        timestamp= "0000-00-00 00000000000"
-      )
-    else:
-      print("\n[Status retorno] JSON de retorno: \n" + str({
-        "codigo": self.codigo,
-        "mensagem": self.mensagem,
-        "timestamp": "0000-00-00 00000000000"
-      }) + "\n")
-
-      return jsonify(
-        codigo= self.codigo,
-        mensagem= self.mensagem, 
-        timestamp= "0000-00-00 00000000000"
-      )
+    return jsonify(
+      codigo= self.codigo,
+      mensagem= self.mensagem,
+      objeto= self.objeto,
+      timestamp= "0000-00-00 00000000000"
+    )

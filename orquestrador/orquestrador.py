@@ -230,3 +230,57 @@ class Orquestrador(object):
             return True
         else:
             return False
+
+    def verificar_empresa(self, id_empresa):
+        if(self.conexao_bd.Empresas.find({"_id": ObjectId(id_empresa)}).limit(1).count() > 0):
+            print('empresa encontrado!!')
+            return True
+        else:
+            return False
+
+    # ----------------------------------------------------------------------
+    # Orquestrador: Projeto
+    # ----------------------------------------------------------------------        
+    def cadastrar_projeto(self, projeto):
+        
+        if self.verificar_empresa(projeto["id_empresa"]):
+            try:
+                colecao_projetos = self.conexao_bd.Projetos
+            except:
+                raise StatusInternos('SI-4')
+
+            try:
+                projeto_id = colecao_projetos.insert_one(projeto)
+                
+                print("\n[Orquestrador] projeto cadastrado com sucesso!\n")
+                print("id:" + str(projeto_id.inserted_id))
+
+                return(str(projeto_id.inserted_id))
+            
+            except:
+                raise StatusInternos('SI-12', {'projeto': projeto})
+        
+        else:
+            print("[Orquestrador] empresa não cadastrada na coleção Empresas")
+            raise StatusInternos('SI-13')
+
+    def verificar_id_projeto(self, id_projeto):
+        try:
+            if(self.conexao_bd.Projetos.find({"_id": ObjectId(id_projeto)}).limit(1).count() > 0):
+            
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' encontrado na coleção de Projetos, exibindo documento retornado:\n")
+            
+                dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)})
+            
+                print(str(dados_projeto[0]))
+                return dados_projeto[0]
+
+            else:
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' não encontrado na coleção de ProjetoPessoa\n")
+                
+            return None
+        
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
+    

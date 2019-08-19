@@ -58,7 +58,7 @@ class Orquestrador(object):
                 try:
                     self.conexao_bd.Pessoas.update(
                         {"_id": ObjectId(segredo)}, {"$set":  dados_novos})
-
+                        
                 except Exception as e:
                     print(e)
                     raise Exception(StatusInternos(

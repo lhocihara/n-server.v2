@@ -118,7 +118,7 @@ def Editar_Pessoa():
 
     print("\n[Requisição-POST] /login:\n" + str(editar_request) + "\n")
     try:
-        retorno = orq.editar_dados_pessoa(segredo, dados_editados)
+        orq.editar_dados_pessoa(segredo, dados_editados)
 
         json_retorno = RespostasAPI('Edição realizada com sucesso',
                                 {

@@ -39,6 +39,7 @@ schemaCadastro = {
     }
 }
 
+
 schemaLoginPessoa = {
   "title" : "Login de Pessoa",
   "type" : "object",
@@ -55,3 +56,175 @@ schemaLoginPessoa = {
     }
   }
 }
+
+
+
+schemaEdicao = {
+        "type": "object",
+    "properties": {
+        "nome_completo":
+          {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
+          },
+        "cpf":
+          {
+            "type": "string", "minLength": 11, "maxLength": 11
+          },
+        "rg:":
+            {
+            "type": "object",
+            "properties": {
+                "emissor":{
+                    "type": "string", "minLength": 3, "maxLength": 3
+                },
+                "numero": {
+                    "type": "string", "maxLength": 14
+                }
+              }
+            },
+        "data_nasc":
+          {
+            "type": "string", "format": "date-time"
+          },
+        "genero":
+          {
+            "type": "string", "pattern": "^[M|F|D]$"
+          },
+        "email":
+          {
+            "type": "string", "format": "email"
+          },
+        "senha":
+          {
+            "type": "string", "minLength": 8
+          },
+        "nacionalidade":
+          {
+            "type": "string", "pattern" : " "
+          },
+        "naturalidade" :
+          {
+          "type" : "object",
+          "properties" : {
+            "pais" : {
+              "type" : "string", "pattern" : ""
+            },
+            "UF" : {
+              "type" : "string", "maxLenght" : 2
+            },
+            "cidade" : {
+              "type" : "string"
+            },
+          },
+          "endereço" : {
+            "type" : "object",
+            "properties" : {
+              "CEP" : {
+                "type" : "string"
+              },
+              "logradouro" : {
+                "type" : "string"
+              },
+              "numero" : {
+                "type" : "number"
+              },
+              "cidade" : {
+                "type" : "string"
+              },
+              "UF" : {
+              "type" : "string", "maxLenght" : 2
+            },
+            "complemento" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+schemaAdicao = {
+        "type": "object",
+    "properties": {
+        "nome_completo":
+          {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
+          },
+        "cpf":
+          {
+            "type": "string", "minLength": 11, "maxLength": 11
+          },
+        "rg:":
+            {
+            "type": "object",
+            "properties": {
+                "emissor":{
+                    "type": "string", "minLength": 3, "maxLength": 3
+                },
+                "numero": {
+                    "type": "string", "maxLength": 14
+                }
+              }
+            },
+        "data_nasc":
+          {
+            "type": "string", "format": "date-time"
+          },
+        "genero":
+          {
+            "type": "string", "pattern": "^[M|F|D]$"
+          },
+        "email":
+          {
+            "type": "string", "format": "email"
+          },
+        "senha":
+          {
+            "type": "string", "minLength": 8
+          },
+        "nacionalidade":
+          {
+            "type": "string", "pattern" : " "
+          },
+        "naturalidade" :
+          {
+          "type" : "object",
+          "properties" : {
+            "pais" : {
+              "type" : "string", "pattern" : ""
+            },
+            "UF" : {
+              "type" : "string", "maxLenght" : 2
+            },
+            "cidade" : {
+              "type" : "string"
+            },
+          },
+          "endereço" : {
+            "type" : "object",
+            "properties" : {
+              "CEP" : {
+                "type" : "string"
+              },
+              "logradouro" : {
+                "type" : "string"
+              },
+              "numero" : {
+                "type" : "number"
+              },
+              "cidade" : {
+                "type" : "string"
+              },
+              "UF" : {
+              "type" : "string", "maxLenght" : 2
+            },
+            "complemento" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
+  }

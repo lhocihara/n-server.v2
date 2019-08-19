@@ -18,7 +18,7 @@ from biblioteca_respostas.respostas_api import RespostasAPI
 # ----------------------------------------------------------
 # Importação dos schemas referentes a Pessoa
 # ----------------------------------------------------------
-from schemas.pessoa import schemaCadastro, schemaLoginPessoa
+from schemas.pessoa import schemaCadastro, schemaLoginPessoa,schemaEdicao
 
 
 orq = Orquestrador()

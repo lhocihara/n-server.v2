@@ -177,7 +177,7 @@ def Consultar_Pessoa() :
         json_retorno = RespostasAPI('Consulta realizada com sucesso',
                                 {
                                     'segredo': str(segredo),
-                                    'dados de ' + str(retorno['nome_completo']) : str(retorno),
+                                    'dados': str(retorno),
                                 }
                                 ).JSON
 
@@ -203,7 +203,7 @@ def ExcluirDados_Pessoa():
         json_retorno = RespostasAPI('Exclusão realizada com sucesso',
                                 {
                                     'segredo': str(segredo),
-                                    'Dados excluídos:' : str(dados_excluidos),
+                                    'dados' : str(dados_excluidos),
                                 }
                                 ).JSON
 

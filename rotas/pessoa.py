@@ -160,3 +160,54 @@ def AdicionarDados_Pessoa():
 
     except StatusInternos as e:
         return e.errors
+    
+## ---------------------------------------------------------
+## Endpoint de consulta de Pessoa
+## ---------------------------------------------------------
+
+    
+@blueprint_pessoa.route("/consultar", methods=['GET'])
+def Consultar_Pessoa() :
+    consulta_pessoa = request.json
+    segredo = consulta_pessoa['_id']
+    print("\n[Requisição-GET] /Consultar dados Pessoa:\n" + str(consulta_pessoa) + "\n")
+    try:
+        retorno = orq.verificar_id_usuario(segredo)
+
+        json_retorno = RespostasAPI('Consulta realizada com sucesso',
+                                {
+                                    'segredo': str(segredo),
+                                    'dados': str(retorno),
+                                }
+                                ).JSON
+
+        return json_retorno
+    except StatusInternos as e:
+        return e.errors
+
+## ---------------------------------------------------------
+## Endpoint de exclusão de dados de Pessoa
+## ---------------------------------------------------------
+
+@blueprint_pessoa.route("/excluir_dados", methods=['DELETE'])
+@schema.validate(schemaEdicao)
+def ExcluirDados_Pessoa():
+
+    excluir_dados_request = request.json
+    segredo = excluir_dados_request['_id']
+    dados_excluidos = excluir_dados_request['dados_excluidos']
+    print("\n[Requisição-DELETE] /Excluir Dados:\n" + str(excluir_dados_request) + "\n")
+    try:
+        orq.excluir_dados_pessoa(segredo,dados_excluidos)
+
+        json_retorno = RespostasAPI('Exclusão realizada com sucesso',
+                                {
+                                    'segredo': str(segredo),
+                                    'dados' : str(dados_excluidos),
+                                }
+                                ).JSON
+
+        return json_retorno
+
+    except StatusInternos as e:
+        return e.errors

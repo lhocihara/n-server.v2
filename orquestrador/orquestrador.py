@@ -101,6 +101,38 @@ class Orquestrador(object):
     def excluir_pessoa(self, pessoa_id_usuario):
             # simulando retorno OK
         return True
+    
+    
+    
+    def excluir_dados_pessoa(self, segredo, dados):
+        
+        try:
+            if (self.conexao_bd.Pessoas.find({"_id": ObjectId(segredo)}).limit(1).count() > 0):
+
+                print("\n[Orquestrador] Exclusão de dados:\n" + str(dados))
+
+                try:
+                    self.conexao_bd.Pessoas.update(
+                    {"_id": ObjectId(segredo)}, {"$unset": dados}), False, True
+
+                except Exception as e:
+                    print(e)
+                    raise Exception(StatusInternos(
+                    "SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
+                         "segredo": segredo}))
+
+            else:
+                raise Exception(StatusInternos(
+                "SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
+                     "segredo": segredo}))
+
+        except Exception as e:
+            print(e)
+            raise Exception(StatusInternos(
+                "SI-4", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados}))
+            
+            
+    
 
     def login_pessoa(self, valor_login, senha, tipo):
         # Login por cpf

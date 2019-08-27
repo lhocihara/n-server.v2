@@ -166,11 +166,10 @@ def AdicionarDados_Pessoa():
 ## ---------------------------------------------------------
 
     
-@blueprint_pessoa.route("/consultar/<id>", methods=['GET'])
-def Consultar_Pessoa(id):
-    consulta_pessoa = request.json
-    segredo = id
-    print("\n[Requisição-GET] /Consultar dados Pessoa:\n" + str(consulta_pessoa) + "\n")
+@blueprint_pessoa.route("/consultar/<segredo>")
+def Consultar_Pessoa(segredo):
+    segredo = ObjectId(segredo)
+    print("\n[Requisição-GET] /Consulta dados  Pessoa\n" )
     try:
         retorno = orq.verificar_id_usuario(segredo)
 
@@ -180,7 +179,7 @@ def Consultar_Pessoa(id):
                                     'dados': str(retorno),
                                 }
                                 ).JSON
-        
+
         return json_retorno
     except StatusInternos as e:
         return e.errors

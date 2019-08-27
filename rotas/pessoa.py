@@ -75,7 +75,7 @@ def Cadastrar_Pessoa():
 
 
 # ----------------------------------------------------------
-# Endpoint de cadastro inicial de pessoas
+# Endpoint de cadastro inicial de pessoas [POST]
 # ----------------------------------------------------------
 @blueprint_pessoa.route("/login", methods=['POST'])
 @schema.validate(schemaLoginPessoa)
@@ -105,7 +105,7 @@ def Logar_Pessoa():
  
 
 ## ---------------------------------------------------------
-## Endpoint de edição de dados de pessoas
+## Endpoint de edição de dados de pessoas [PUT]
 ## ---------------------------------------------------------
 
 @blueprint_pessoa.route("/editar_dados", methods=['PUT'])
@@ -134,7 +134,7 @@ def Editar_Pessoa():
         return e.errors 
     
 ## ---------------------------------------------------------
-## Endpoint de adição de dados de pessoas
+## Endpoint de adição de dados de pessoas [PUT]
 ## ---------------------------------------------------------
     
 
@@ -162,14 +162,14 @@ def AdicionarDados_Pessoa():
         return e.errors
     
 ## ---------------------------------------------------------
-## Endpoint de consulta de Pessoa
+## Endpoint de consulta de Pessoa [GET]
 ## ---------------------------------------------------------
 
     
-@blueprint_pessoa.route("/consultar", methods=['GET'])
-def Consultar_Pessoa() :
+@blueprint_pessoa.route("/consultar/<id>", methods=['GET'])
+def Consultar_Pessoa(id):
     consulta_pessoa = request.json
-    segredo = consulta_pessoa['_id']
+    segredo = id
     print("\n[Requisição-GET] /Consultar dados Pessoa:\n" + str(consulta_pessoa) + "\n")
     try:
         retorno = orq.verificar_id_usuario(segredo)
@@ -180,7 +180,7 @@ def Consultar_Pessoa() :
                                     'dados': str(retorno),
                                 }
                                 ).JSON
-
+        
         return json_retorno
     except StatusInternos as e:
         return e.errors

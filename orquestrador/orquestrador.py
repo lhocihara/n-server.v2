@@ -175,7 +175,7 @@ class Orquestrador(object):
 
     def verificar_id_usuario(self, pessoa_id_usuario):
         try:
-            if(self.conexao_bd.Pessoas.find({"_id": ObjectId(pessoa_id_usuario)},{_id:0}).limit(1).count() > 0):
+        if(self.conexao_bd.Pessoas.find({"_id": ObjectId(pessoa_id_usuario)},{"_id":0}).limit(1).count() > 0):
                 print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) +
                       "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
 

@@ -177,7 +177,7 @@ def Consultar_Pessoa(segredo):
         json_retorno = RespostasAPI('Consulta realizada com sucesso',
                                 {
                                     'segredo': str(segredo),
-                                    'dados': retorno,
+                                    'dados': str(retorno),
                                 }
                                 ).JSON
 

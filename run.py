@@ -1,7 +1,7 @@
 import os
 from main import app
 
-envi_prod = True
+envi_prod = False
 ## ----------------------------------------------------------
 ## configuração de IP e porta
 ## ----------------------------------------------------------

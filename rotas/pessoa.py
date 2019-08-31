@@ -167,23 +167,23 @@ def AdicionarDados_Pessoa():
 ## ---------------------------------------------------------
 
     
-# @blueprint_pessoa.route("/consultar/<segredo>")
-# def Consultar_Pessoa(segredo):
-#     segredo = ObjectId(segredo)
-#     print("\n[Requisição-GET] /Consulta dados  Pessoa\n" )
-#     try:
-#         retorno = orq.verificar_id_usuario(segredo)
+@blueprint_pessoa.route("/consultar/<segredo>")
+def Consultar_Pessoa(segredo):
+    segredo = ObjectId(segredo)
+    print("\n[Requisição-GET] /Consulta dados  Pessoa\n" )
+    try:
+        retorno = orq.verificar_id_usuario(segredo)
 
-#         json_retorno = RespostasAPI('Consulta realizada com sucesso',
-#                                 {
-#                                     'segredo': str(segredo),
-#                                     'dados': str(retorno),
-#                                 }
-#                                 ).JSON
+        json_retorno = RespostasAPI('Consulta realizada com sucesso',
+                                {
+                                    'segredo': str(segredo),
+                                    'dados': str(retorno),
+                                }
+                                ).JSON
 
-#         return json_retorno
-#     except StatusInternos as e:
-#         return e.errors
+        return json_retorno
+    except StatusInternos as e:
+        return e.errors
 
 ## ---------------------------------------------------------
 ## Endpoint de exclusão de dados de Pessoa

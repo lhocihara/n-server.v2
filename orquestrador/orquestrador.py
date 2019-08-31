@@ -216,103 +216,103 @@ class Orquestrador(object):
 
     # ----------------------------------------------------------------------
     # Orquestrador: Empresa
-    # # ----------------------------------------------------------------------
-    # def cadastrar_empresa(self, empresa):
-    #     if self.verificar_cnpj(empresa["cnpj"]):
-    #         raise StatusInternos("SI-9", {'cnpj': str(empresa["cnpj"])})
-    #     else:
-    #         try:
-    #             colecao_empresas = self.conexao_bd.Empresas
-    #         except:
-    #             raise StatusInternos('SI-4')
+    # ----------------------------------------------------------------------
+    def cadastrar_empresa(self, empresa):
+        if self.verificar_cnpj(empresa["cnpj"]):
+            raise StatusInternos("SI-9", {'cnpj': str(empresa["cnpj"])})
+        else:
+            try:
+                colecao_empresas = self.conexao_bd.Empresas
+            except:
+                raise StatusInternos('SI-4')
 
-    #         try:
-    #             empresa_id = colecao_empresas.insert_one(empresa)
+            try:
+                empresa_id = colecao_empresas.insert_one(empresa)
 
-    #             print("\n[Orquestrador] empresa cadastrada com sucesso!\n")
-    #             print("id:" + str(empresa_id.inserted_id))
+                print("\n[Orquestrador] empresa cadastrada com sucesso!\n")
+                print("id:" + str(empresa_id.inserted_id))
 
-    #             return(str(empresa_id.inserted_id))
+                return(str(empresa_id.inserted_id))
 
-    #         except:
-    #             raise StatusInternos('SI-10', {'empresa': empresa})
+            except:
+                raise StatusInternos('SI-10', {'empresa': empresa})
 
-    # def verificar_id_empresa(self, empresa_id_usuario):
-    #     try:
-    #         if(self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
-    #             print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
-    #                   "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
+    def verificar_id_empresa(self, empresa_id_usuario):
+        try:
+            if(self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
+                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
+                      "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
 
-    #             dados_empresa = self.conexao_bd.Empresas.find(
-    #                 {"_id": ObjectId(empresa_id_usuario)})
+                dados_empresa = self.conexao_bd.Empresas.find(
+                    {"_id": ObjectId(empresa_id_usuario)})
 
-    #             print(str(dados_empresa[0]))
-    #             return dados_empresa[0]
-    #         else:
-    #             print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
-    #                   "' não encontrado na coleção de Empresas\n")
+                print(str(dados_empresa[0]))
+                return dados_empresa[0]
+            else:
+                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
+                      "' não encontrado na coleção de Empresas\n")
 
-    #             return None
-    #     except Exception as e:
-    #         print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-    #         raise(e)
+                return None
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
 
-    # def verificar_cnpj(self, empresa_cnpj):
-    #     if(self.conexao_bd.Empresas.find({"cnpj": empresa_cnpj}).limit(1).count() > 0):
-    #         return True
-    #     else:
-    #         return False
+    def verificar_cnpj(self, empresa_cnpj):
+        if(self.conexao_bd.Empresas.find({"cnpj": empresa_cnpj}).limit(1).count() > 0):
+            return True
+        else:
+            return False
 
-    # def verificar_empresa(self, id_empresa):
-    #     if(self.conexao_bd.Empresas.find({"_id": ObjectId(id_empresa)}).limit(1).count() > 0):
-    #         print('empresa encontrado!!')
-    #         return True
-    #     else:
-    #         return False
+    def verificar_empresa(self, id_empresa):
+        if(self.conexao_bd.Empresas.find({"_id": ObjectId(id_empresa)}).limit(1).count() > 0):
+            print('empresa encontrado!!')
+            return True
+        else:
+            return False
 
-    # # ----------------------------------------------------------------------
-    # # Orquestrador: Projeto
-    # # ----------------------------------------------------------------------        
-    # def cadastrar_projeto(self, projeto):
+    # ----------------------------------------------------------------------
+    # Orquestrador: Projeto
+    # ----------------------------------------------------------------------        
+    def cadastrar_projeto(self, projeto):
         
-    #     if self.verificar_empresa(projeto["id_empresa"]):
-    #         try:
-    #             colecao_projetos = self.conexao_bd.Projetos
-    #         except:
-    #             raise StatusInternos('SI-4')
+        if self.verificar_empresa(projeto["id_empresa"]):
+            try:
+                colecao_projetos = self.conexao_bd.Projetos
+            except:
+                raise StatusInternos('SI-4')
 
-    #         try:
-    #             projeto_id = colecao_projetos.insert_one(projeto)
+            try:
+                projeto_id = colecao_projetos.insert_one(projeto)
                 
-    #             print("\n[Orquestrador] projeto cadastrado com sucesso!\n")
-    #             print("id:" + str(projeto_id.inserted_id))
+                print("\n[Orquestrador] projeto cadastrado com sucesso!\n")
+                print("id:" + str(projeto_id.inserted_id))
 
-    #             return(str(projeto_id.inserted_id))
+                return(str(projeto_id.inserted_id))
             
-    #         except:
-    #             raise StatusInternos('SI-12', {'projeto': projeto})
+            except:
+                raise StatusInternos('SI-12', {'projeto': projeto})
         
-    #     else:
-    #         print("[Orquestrador] empresa não cadastrada na coleção Empresas")
-    #         raise StatusInternos('SI-13')
+        else:
+            print("[Orquestrador] empresa não cadastrada na coleção Empresas")
+            raise StatusInternos('SI-13')
 
-    # def verificar_id_projeto(self, id_projeto):
-    #     try:
-    #         if(self.conexao_bd.Projetos.find({"_id": ObjectId(id_projeto)}).limit(1).count() > 0):
+    def verificar_id_projeto(self, id_projeto):
+        try:
+            if(self.conexao_bd.Projetos.find({"_id": ObjectId(id_projeto)}).limit(1).count() > 0):
             
-    #             print("[Orquestrador] id projeto '" + str(id_projeto) + "' encontrado na coleção de Projetos, exibindo documento retornado:\n")
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' encontrado na coleção de Projetos, exibindo documento retornado:\n")
             
-    #             dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)})
+                dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)})
             
-    #             print(str(dados_projeto[0]))
-    #             return dados_projeto[0]
+                print(str(dados_projeto[0]))
+                return dados_projeto[0]
 
-    #         else:
-    #             print("[Orquestrador] id projeto '" + str(id_projeto) + "' não encontrado na coleção de ProjetoPessoa\n")
+            else:
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' não encontrado na coleção de ProjetoPessoa\n")
                 
-    #         return None
+            return None
         
-    #     except Exception as e:
-    #         print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-    #         raise(e)
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
     

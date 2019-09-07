@@ -35,8 +35,9 @@ schemaCadastro = {
         },
         "senha": {
             "type": "string", "minLength": 8 #Adicionar criptografia
-        }
-    }
+        },
+    },
+         "additionalProperties" : False
 }
 
 
@@ -54,15 +55,23 @@ schemaLoginPessoa = {
     "tipo_entrada" : {
       "type" : "string", "pattern" : "^[0|1]$"
     }
-  }
+  },
+    "additionalProperties" : False
 }
-
-
 
 schemaEdicao = {
         "type": "object",
     "properties": {
-        "nome_completo":
+        "_id" : 
+        { 
+            "type" : "string"
+         },
+
+         "dados_editados":  {
+          "type" : "object",
+          "properties" : {
+        
+           "nome_completo":
           {
             "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
           },
@@ -100,7 +109,7 @@ schemaEdicao = {
           },
         "nacionalidade":
           {
-            "type": "string", "pattern" : " "
+            "type": "string"
           },
         "naturalidade" :
           {
@@ -136,13 +145,19 @@ schemaEdicao = {
             },
             "complemento" : {
               "type" : "string"
-            }
+            },            
           }
-        }
-      }
-    }
+        },          
+      },         
+        },
+           "additionalProperties" : False
+        },
+         "dados_excluidos" : {
+              "type" : "object"
+              },
+    },
+"additionalProperties" : False
   }
-
 
 
 schemaAdicao = {

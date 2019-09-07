@@ -26,6 +26,8 @@ class Orquestrador(object):
     # ----------------------------------------------------------------------
     # Orquestrador: Pessoa
     # ----------------------------------------------------------------------
+    
+    ##Cadastro de Pessoas
     def cadastrar_pessoa(self, pessoa):
         if self.verificar_cpf(pessoa["cpf"]):
             raise StatusInternos('SI-1', {'cpf': str(pessoa["cpf"])})
@@ -49,6 +51,7 @@ class Orquestrador(object):
         except:
             raise StatusInternos('SI-3', {'pessoa': pessoa})
     
+    ##Adição de dados de Pessoa
     def adicionar_dados_pessoa(self, segredo, dados_novos):
         try:
             if(self.conexao_bd.Pessoas.find({"_id": ObjectId(segredo)}).limit(1).count() > 0):
@@ -73,6 +76,7 @@ class Orquestrador(object):
             raise Exception(StatusInternos(
                 "SI-4", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos}))
 
+    ##Edição de Dados Pessoa
     def editar_dados_pessoa(self, segredo, dados):
 
         try:
@@ -98,12 +102,13 @@ class Orquestrador(object):
             raise Exception(StatusInternos(
                 "SI-4", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados}))
 
+    ## Exclusão de Pessoa
     def excluir_pessoa(self, pessoa_id_usuario):
             # simulando retorno OK
         return True
     
     
-    
+    ##Exclusão de dados de Pessoa
     def excluir_dados_pessoa(self, segredo, dados):
         
         try:
@@ -131,9 +136,8 @@ class Orquestrador(object):
             raise Exception(StatusInternos(
                 "SI-4", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados}))
             
-            
+               
     
-
     def login_pessoa(self, valor_login, senha, tipo):
         # Login por cpf
         if(tipo == '0'):
@@ -173,6 +177,8 @@ class Orquestrador(object):
             print(e)
             raise StatusInternos('SI-6')
 
+            
+    ##Verifica se ID existe na base de dados
     def verificar_id_usuario(self, pessoa_id_usuario):
         try:
             if(self.conexao_bd.Pessoas.find({"_id": ObjectId(pessoa_id_usuario)}).limit(1).count() > 0):
@@ -188,26 +194,29 @@ class Orquestrador(object):
             else:
                 print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) +
                       "' não encontrado na coleção de Pessoas\n")
-
                 return None
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
 
         # raise Exception(CodigoStatusHttp(500).retorno())
-
+    
+    
+    ##Verifica se CPF da Pessoa existe na base de dados
     def verificar_cpf(self, pessoa_cpf):
         if(self.conexao_bd.Pessoas.find({"cpf": pessoa_cpf}).limit(1).count() > 0):
             return True
         else:
             return False
 
+    ##Verifica se email da Pessoa existe na base de Dados
     def verificar_email(self, pessoa_email):
         if(self.conexao_bd.Pessoas.find({"email": pessoa_email}).limit(1).count() > 0):
             return True
         else:
             return False
     
+    ##Verifica se CPF ou Email do Usuário existe na base de dados para pode realizar o Login
     def verificar_metodo_login_existente(self, pessoa_cpf, pessoa_email):
         if(self.conexao_bd.Pessoas.find({"$or": [{"cpf": pessoa_cpf}, {"email": pessoa_email}]}).limit(1).count() > 0):
             return True
@@ -217,6 +226,8 @@ class Orquestrador(object):
     # ----------------------------------------------------------------------
     # Orquestrador: Empresa
     # ----------------------------------------------------------------------
+    
+    ##Cadastra Empresa
     def cadastrar_empresa(self, empresa):
         if self.verificar_cnpj(empresa["cnpj"]):
             raise StatusInternos("SI-9", {'cnpj': str(empresa["cnpj"])})
@@ -237,17 +248,19 @@ class Orquestrador(object):
             except:
                 raise StatusInternos('SI-10', {'empresa': empresa})
 
+    ## Consulta Empresa
     def verificar_id_empresa(self, empresa_id_usuario):
         try:
-            if(self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
+            if (self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
                 print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
-                      "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
+                      "' encontrado na coleção de Empresas, exibindo documento retornado:\n")
 
                 dados_empresa = self.conexao_bd.Empresas.find(
-                    {"_id": ObjectId(empresa_id_usuario)})
+                    {"_id": ObjectId(empresa_id_usuario)}, {'_id': 0})
 
-                print(str(dados_empresa[0]))
-                return dados_empresa[0]
+                r = dados_empresa[0]
+                print (str(r))
+                return r
             else:
                 print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
                       "' não encontrado na coleção de Empresas\n")
@@ -255,8 +268,10 @@ class Orquestrador(object):
                 return None
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-            raise(e)
-
+            raise (e)
+    
+    
+    ##Verifica se CNPJ existe na Base de Dados
     def verificar_cnpj(self, empresa_cnpj):
         if(self.conexao_bd.Empresas.find({"cnpj": empresa_cnpj}).limit(1).count() > 0):
             return True

@@ -109,6 +109,9 @@ def Logar_Pessoa():
 ## Endpoint de edição de dados de pessoas [PUT]
 ## ---------------------------------------------------------
 
+## ---------------------------------------------------------
+## Endpoint de edição de dados de pessoas
+## ---------------------------------------------------------
 @blueprint_pessoa.route("/editar_dados", methods=['PUT'])
 @schema.validate(schemaEdicao)
 def Editar_Pessoa():
@@ -116,23 +119,28 @@ def Editar_Pessoa():
     editar_request = request.json
     segredo = editar_request['_id']
     dados_editados = editar_request['dados_editados']
-
-    print("\n[Requisição-POST] /login:\n" + str(editar_request) + "\n")
+    print("\n[Requisição-PUT] /Edição de dados de Pessoa \n" + str(editar_request) + "\n")
     try:
+        
         orq.editar_dados_pessoa(segredo, dados_editados)
+
+        if 'dados_excluidos' in editar_request:
+            dados_excluidos = editar_request['dados_excluidos']
+            orq.excluir_dados_pessoa(segredo, dados_excluidos)
+        else:
+            dados_excluidos =  None
 
         json_retorno = RespostasAPI('Edição realizada com sucesso',
                                 {
-                                    'segredo': str(segredo),
-                                    'dados editados' : str(dados_editados)
-
+                                    'segredo': segredo,
+                                    'dados editados' : dados_editados,
+                                    'dados_excluidos' : dados_excluidos,
                                 }
                                 ).JSON
-
         return json_retorno
 
     except StatusInternos as e:
-        return e.errors 
+        return e.errors
     
 ## ---------------------------------------------------------
 ## Endpoint de adição de dados de pessoas [PUT]

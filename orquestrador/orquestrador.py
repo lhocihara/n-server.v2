@@ -58,7 +58,7 @@ class Orquestrador(object):
                 try:
                     self.conexao_bd.Pessoas.update(
                         {"_id": ObjectId(segredo)}, {"$set":  dados_novos})
-
+                        
                 except Exception as e:
                     print(e)
                     raise Exception(StatusInternos(
@@ -180,11 +180,11 @@ class Orquestrador(object):
                       "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
 
                 dados_pessoa = self.conexao_bd.Pessoas.find(
-                    {"_id": ObjectId(pessoa_id_usuario)})
+                    {"_id": ObjectId(pessoa_id_usuario)},{'_id': 0})
+                r = dados_pessoa[0]
+                print(str(r))
 
-                print(str(dados_pessoa[0]))
-
-                return dados_pessoa[0]
+                return r
             else:
                 print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) +
                       "' não encontrado na coleção de Pessoas\n")

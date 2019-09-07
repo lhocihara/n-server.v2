@@ -3,6 +3,7 @@
 # ----------------------------------------------------------
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
+from bson.objectid import ObjectId
 import pymongo
 import dns
 
@@ -18,7 +19,7 @@ from biblioteca_respostas.respostas_api import RespostasAPI
 # ----------------------------------------------------------
 # Importação dos schemas referentes a Pessoa
 # ----------------------------------------------------------
-from schemas.pessoa import schemaCadastro, schemaLoginPessoa
+from schemas.pessoa import schemaCadastro, schemaLoginPessoa,schemaEdicao
 
 
 orq = Orquestrador()
@@ -118,7 +119,7 @@ def Editar_Pessoa():
 
     print("\n[Requisição-POST] /login:\n" + str(editar_request) + "\n")
     try:
-        retorno = orq.editar_dados_pessoa(segredo, dados_editados)
+        orq.editar_dados_pessoa(segredo, dados_editados)
 
         json_retorno = RespostasAPI('Edição realizada com sucesso',
                                 {
@@ -176,7 +177,7 @@ def Consultar_Pessoa(segredo):
         json_retorno = RespostasAPI('Consulta realizada com sucesso',
                                 {
                                     'segredo': str(segredo),
-                                    'dados': str(retorno),
+                                    'dados': retorno,
                                 }
                                 ).JSON
 

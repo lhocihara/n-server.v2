@@ -43,7 +43,7 @@ schema = JsonSchema(app)
 ## ----------------------------------------------------------
 
 ## ----------------------------------------------------------
-## Endpoint de cadastro de empresas
+## Endpoint de cadastro de empresas [POST]
 ## ----------------------------------------------------------
 @blueprint_empresa.route("/cadastro", methods=['POST'])
 @schema.validate(schemaCadastro)
@@ -60,6 +60,32 @@ def Cadastrar_Empresa():
                                     {
                                         'segredo': str(retorno_id),
                                         'cnpj': str(empresa_request['cnpj'])
+                                    }
+                                    ).JSON
+
+        return json_retorno
+    except StatusInternos as e:
+        return e.errors
+
+    
+## ----------------------------------------------------------
+## Endpoint de consulta de empresas [GET]
+## ----------------------------------------------------------
+
+@blueprint_empresa.route("/consultar/<segredo>")
+def Consultar_Empresa(segredo):
+    segredo = ObjectId(segredo)
+    empresa_request = request.json
+
+    print("\n[Requisição-GET] /Consulta de Empresa: \n" + str(empresa_request) + "\n")
+
+    try:
+        retorno = orq.verificar_id_empresa(segredo)
+
+        json_retorno = RespostasAPI('Consulta realizada com sucesso',
+                                    {
+                                        'segredo': str(segredo),
+                                        'dados' : retorno,
                                     }
                                     ).JSON
 

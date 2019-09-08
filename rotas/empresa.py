@@ -3,6 +3,7 @@
 ## ----------------------------------------------------------
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
+from bson.objectid import ObjectId
 import pymongo
 import dns
 

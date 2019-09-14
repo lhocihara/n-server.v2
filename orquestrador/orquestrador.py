@@ -288,6 +288,7 @@ class Orquestrador(object):
     # ----------------------------------------------------------------------
     # Orquestrador: Projeto
     # ----------------------------------------------------------------------        
+    
     def cadastrar_projeto(self, projeto):
 
         if self.verificar_empresa(projeto["empresa_id"]):
@@ -329,4 +330,3 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
-    

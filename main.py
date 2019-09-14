@@ -25,6 +25,8 @@ app.config.from_object('settings')
 ## ----------------------------------------------------------
 app.register_blueprint(blueprint_pessoa,url_prefix="/pessoa")
 app.register_blueprint(blueprint_empresa,url_prefix="/empresa")
+app.register_blueprint(blueprint_projeto,url_prefix="/projeto")
+
 
 ## ----------------------------------------------------------
 ## Tratamento de erros na validação

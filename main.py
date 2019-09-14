@@ -12,6 +12,7 @@ from flask_json_schema import JsonSchema, JsonValidationError
 ## ----------------------------------------------------------
 from rotas.pessoa import blueprint_pessoa
 from rotas.empresa import blueprint_empresa
+from rotas.projeto import blueprint_projeto
 
 ## ----------------------------------------------------------
 ## Instanciando a API

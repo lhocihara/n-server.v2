@@ -134,7 +134,7 @@ schemaEdicao = {
                 "type": "string"
               },
               "numero": {
-                "type": "number"
+                "type": "string"
               },
               "cidade": {
                 "type": "string"

@@ -46,6 +46,7 @@ def validation_error(e):
 ## ----------------------------------------------------------
 @app.route("/hi")
 def boas_vindas():
+    print('Oi')
     return render_template("bem_vindos.html")
 
 ##Definição do endpoint

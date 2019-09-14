@@ -99,8 +99,17 @@ schemaCadastro = {
           "cpf":{
             "type": "string", "minLength": 11, "maxLength": 11
           },
-          "rg": {
-            "type": "string", "maxLength": 14
+         "rg:":
+          {
+            "type": "object",
+            "properties": {
+              "emissor":{
+                  "type": "string", "minLength": 3, "maxLength": 3
+              },
+              "numero": {
+                  "type": "string", "maxLength": 14
+              }
+            }
           },
           "email" : {
             "type" : "string", "format" : "email"

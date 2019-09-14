@@ -77,7 +77,7 @@ schemaEdicao = {
           {
             "type": "string", "minLength": 11, "maxLength": 11
           },
-          "rg:":
+          "rg":
           {
             "type": "object",
             "properties": {

@@ -21,6 +21,9 @@ schemaCadastro = {
     "ie" : {
       "type" : "string"
     },
+    "nire" : {
+      "type" : "string"
+    },
     "endereco" : {
       "type" : "array",
       "items" : {
@@ -33,6 +36,9 @@ schemaCadastro = {
               "logradouro" : {
                 "type" : "string"
               },
+              "bairro" : {
+                "type" : "string"
+              },
               "numero" : {
                 "type" : "string"
               },
@@ -40,7 +46,7 @@ schemaCadastro = {
                 "type" : "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
               },
               "UF" : {
-              "type" : "string", "maxLength" : 2
+                "type" : "string", "maxLength" : 2
               },
             "complemento" : {
               "type" : "string"
@@ -87,8 +93,21 @@ schemaCadastro = {
           "cargo" : {
             "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
           },
+          "nacionalidade" : {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
+          },
+          "cpf":{
+            "type": "string", "minLength": 11, "maxLength": 11
+          },
+          "rg": {
+            "type": "string", "maxLength": 14
+          },
           "email" : {
             "type" : "string", "format" : "email"
+          },
+          "estado_civil":
+          {
+            "type": "string", "pattern": "^[CA|SO|SE|DI|VI]+$"
           },
           "telefones" : {
             "type" : "array",

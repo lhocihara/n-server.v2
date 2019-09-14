@@ -34,6 +34,7 @@ blueprint_empresa = Blueprint("Empresa", __name__)
 # ----------------------------------------------------------
 app = Flask("Empresa")
 cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 schema = JsonSchema(app)
 
 
@@ -49,7 +50,7 @@ schema = JsonSchema(app)
 # Endpoint de cadastro de empresas [POST]
 # ----------------------------------------------------------
 @blueprint_empresa.route("/cadastro", methods=['POST'])
-# @cross_origin()
+@cross_origin()
 @schema.validate(schemaCadastro)
 def Cadastrar_Empresa():
 

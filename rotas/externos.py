@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ## ----------------------------------------------------------
-## ImportaÁ„o dos mÛdulos padrıes
+## Importa√ß√£o dos m√≥dulos padr√µes
 ## ----------------------------------------------------------
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
@@ -12,37 +12,37 @@ import pymongo
 import dns
 
 ## ----------------------------------------------------------
-## ImportaÁ„o do orquestrador da conex„o com BD
+## Importa√ß√£o do orquestrador da conex√£o com BD
 ## ----------------------------------------------------------
 from orquestrador.orquestrador import Orquestrador 
 ## ----------------------------------------------------------
-## ImportaÁ„o dos Objetos de tratamento de erros
+## Importa√ß√£o dos Objetos de tratamento de erros
 ## ----------------------------------------------------------
 from biblioteca_respostas.status_internos import StatusInternos
 from biblioteca_respostas.respostas_api import RespostasAPI
 ## ----------------------------------------------------------
-## ImportaÁ„o dos schemas referentes a Externos
+## Importa√ß√£o dos schemas referentes a Externos
 ## ----------------------------------------------------------
 
 orq = Orquestrador()
 
 ## ----------------------------------------------------------
-## DefiniÁ„o do Blueprint
+## Defini√ß√£o do Blueprint
 ## ----------------------------------------------------------
 blueprint_externos = Blueprint("Externos",__name__)
 
 ## ----------------------------------------------------------
-## DefiniÁ„o do Subapp e Schema
+## Defini√ß√£o do Subapp e Schema
 ## ----------------------------------------------------------
 app = Flask("Externos")
 schema = JsonSchema(app)
 
 ## ----------------------------------------------------------
-## Rotas dos serviÁos para o APP
+## Rotas dos servi√ßos para o APP
 ## ----------------------------------------------------------
 ##
 ## @pessoa_blue.route: A rota do endpoint
-## @schema.validate: O schema a ser validado durante a requisiÁ„o
+## @schema.validate: O schema a ser validado durante a requisi√ß√£o
 ## ----------------------------------------------------------
 
 
@@ -64,10 +64,6 @@ def Gerar_Token():
                                     ).JSON 
             else:
                 raise StatusInternos('SI-21', {'projeto': projeto})
-      except StatusInternos as e:
-            return e.errors
-      try:
-          orq.verifica_token(token)
       except StatusInternos as e:
             return e.errors
 

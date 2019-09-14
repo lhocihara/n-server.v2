@@ -3,6 +3,6 @@ Flask==1.0.0
 itsdangerous==0.24
 Jinja2>=2.10.1
 MarkupSafe==1.0
-Werkzeug==0.14.1
+Werkzeug>=0.14.1
 pymongo[tls,srv,gssapi]==3.6.1
 Flask_json_schema==0.0.5

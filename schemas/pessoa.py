@@ -125,7 +125,7 @@ schemaEdicao = {
               "type" : "string"
             },
           },
-          "endereço" : {
+          "endereco" : {
             "type" : "object",
             "properties" : {
               "CEP" : {
@@ -217,7 +217,7 @@ schemaAdicao = {
               "type" : "string"
             },
           },
-          "endereço" : {
+          "endereco" : {
             "type" : "object",
             "properties" : {
               "CEP" : {

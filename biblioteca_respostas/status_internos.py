@@ -52,4 +52,4 @@ class StatusInternos(Exception):
       mensagem= self.mensagem,
       objeto= self.objeto,
       timestamp= "0000-00-00 00000000000"
-    )
+    ), 400

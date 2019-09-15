@@ -13,6 +13,8 @@ from flask_json_schema import JsonSchema, JsonValidationError
 from rotas.pessoa import blueprint_pessoa
 from rotas.empresa import blueprint_empresa
 from rotas.projeto import blueprint_projeto
+from rotas.externos import blueprint_externos
+
 
 ## ----------------------------------------------------------
 ## Instanciando a API
@@ -27,6 +29,8 @@ app.config.from_object('settings')
 app.register_blueprint(blueprint_pessoa,url_prefix="/pessoa")
 app.register_blueprint(blueprint_empresa,url_prefix="/empresa")
 app.register_blueprint(blueprint_projeto,url_prefix="/projeto")
+app.register_blueprint(blueprint_externos,url_prefix="/externos")
+
 
 
 ## ----------------------------------------------------------

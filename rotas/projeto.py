@@ -3,6 +3,7 @@
 ## ----------------------------------------------------------
 from flask_json_schema import JsonSchema, JsonValidationError
 from flask import Flask, Blueprint, request, jsonify
+from flask_cors import CORS, cross_origin
 import pymongo
 import dns
 from bson.objectid import ObjectId
@@ -33,6 +34,8 @@ blueprint_projeto = Blueprint("Projeto", __name__)
 ## Definição do Subapp e Schema
 ## ----------------------------------------------------------
 app = Flask("Projeto")
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 schema = JsonSchema(app)
 
 ## ----------------------------------------------------------
@@ -51,6 +54,7 @@ schema = JsonSchema(app)
 ## Endpoint de cadastro de projetos
 ## ----------------------------------------------------------
 @blueprint_projeto.route("/cadastro", methods=['POST'])
+@cross_origin()
 def Cadastrar_Projeto():
 
     projeto_request = request.json
@@ -75,6 +79,7 @@ def Cadastrar_Projeto():
 ## Endpoint de consulta de projetos
 ## ----------------------------------------------------------
 @blueprint_projeto.route("/consultar/<segredo>")
+@cross_origin()
 def Consultar_Projeto(segredo):
 
     segredo = ObjectId(segredo)

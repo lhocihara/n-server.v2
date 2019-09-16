@@ -78,6 +78,7 @@ def Cadastrar_Empresa():
 # ----------------------------------------------------------
 
 @blueprint_empresa.route("/consultar/<segredo>")
+@cross_origin()
 def Consultar_Empresa(segredo):
     segredo = ObjectId(segredo)
     empresa_request = request.json
@@ -94,6 +95,26 @@ def Consultar_Empresa(segredo):
                                         'dados': retorno,
                                     }
                                     ).JSON
+
+        return json_retorno
+    except StatusInternos as e:
+        return e.errors
+
+# ----------------------------------------------------------
+# Endpoint para listar empresas [GET]
+# ----------------------------------------------------------
+
+
+@blueprint_empresa.route("/listar", methods=['GET'])
+@cross_origin()
+def Listar_Empresa():
+    print("\n[Requisição-GET] /Listar de Empresas")
+
+    try:
+        retorno = orq.listar_empresas()
+
+        json_retorno = RespostasAPI(
+            'Consulta realizada com sucesso', {'empresas': retorno}).JSON
 
         return json_retorno
     except StatusInternos as e:

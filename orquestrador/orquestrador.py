@@ -271,8 +271,7 @@ class Orquestrador(object):
                 return None
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-            raise (e)
-    
+            raise (e) 
     
     ##Verifica se CNPJ existe na Base de Dados
     def verificar_cnpj(self, empresa_cnpj):
@@ -287,6 +286,30 @@ class Orquestrador(object):
             return True
         else:
             return False
+
+    ## Listar Empresas
+    def listar_empresas(self):
+        try:
+            if (self.conexao_bd.Empresas.find().count() > 0):
+                print("[Orquestrador] lista de empresas encontradas. Exibindo documento retornado:\n")
+                
+                ## Captura dados da empresa
+                dados_empresa = self.conexao_bd.Empresas.find({},{"_id","nome_fantasia","cnpj"})
+
+                ## Monta retorno
+                r = []
+                for empresa in dados_empresa:
+                    empresa['_id'] = str(empresa['_id'])
+                    r.append(empresa)
+
+                return r
+            else:
+                print("[Orquestrador] nenhuma empresa cadastrada")
+
+                return None
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise (e)
 
     # ----------------------------------------------------------------------
     # Orquestrador: Projeto

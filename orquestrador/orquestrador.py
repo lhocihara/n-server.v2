@@ -4,6 +4,9 @@ from flask import jsonify
 from pymongo import MongoClient  # Para acessar o MongoDB
 from bson.objectid import ObjectId
 import urllib.parse  # (OPCIONAL) Para criar texto de URI
+from datetime import datetime
+import hashlib
+
 
 from biblioteca_respostas.status_internos import StatusInternos
 
@@ -268,8 +271,7 @@ class Orquestrador(object):
                 return None
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-            raise (e)
-    
+            raise (e) 
     
     ##Verifica se CNPJ existe na Base de Dados
     def verificar_cnpj(self, empresa_cnpj):
@@ -285,39 +287,66 @@ class Orquestrador(object):
         else:
             return False
 
+    ## Listar Empresas
+    def listar_empresas(self):
+        try:
+            if (self.conexao_bd.Empresas.find().count() > 0):
+                print("[Orquestrador] lista de empresas encontradas. Exibindo documento retornado:\n")
+                
+                ## Captura dados da empresa
+                dados_empresa = self.conexao_bd.Empresas.find({},{"_id","nome_fantasia","cnpj"})
+
+                ## Monta retorno
+                r = []
+                for empresa in dados_empresa:
+                    empresa['_id'] = str(empresa['_id'])
+                    r.append(empresa)
+
+                return r
+            else:
+                print("[Orquestrador] nenhuma empresa cadastrada")
+
+                return None
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise (e)
+
     # ----------------------------------------------------------------------
     # Orquestrador: Projeto
     # ----------------------------------------------------------------------        
+    
     def cadastrar_projeto(self, projeto):
-        
-        if self.verificar_empresa(projeto["id_empresa"]):
+
+        if self.verificar_empresa(projeto["empresa_id"]):
             try:
-                colecao_projetos = self.conexao_bd.Projetos
+             colecao_projetos = self.conexao_bd.Projetos
             except:
                 raise StatusInternos('SI-4')
-
             try:
                 projeto_id = colecao_projetos.insert_one(projeto)
-                
+
                 print("\n[Orquestrador] projeto cadastrado com sucesso!\n")
                 print("id:" + str(projeto_id.inserted_id))
 
                 return(str(projeto_id.inserted_id))
-            
+
             except:
                 raise StatusInternos('SI-12', {'projeto': projeto})
-        
         else:
             print("[Orquestrador] empresa não cadastrada na coleção Empresas")
             raise StatusInternos('SI-13')
 
+
+    
+    
+    
     def verificar_id_projeto(self, id_projeto):
         try:
             if(self.conexao_bd.Projetos.find({"_id": ObjectId(id_projeto)}).limit(1).count() > 0):
             
                 print("[Orquestrador] id projeto '" + str(id_projeto) + "' encontrado na coleção de Projetos, exibindo documento retornado:\n")
             
-                dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)})
+                dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)}, {"_id" : 0})
             
                 print(str(dados_projeto[0]))
                 return dados_projeto[0]
@@ -330,4 +359,59 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
+       
     
+    
+    
+    def verificar_id_projeto_externos(self, id_projeto):
+        try:
+            if(self.conexao_bd.Projetos.find({"_id": ObjectId(id_projeto)}).limit(1).count() > 0):
+            
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' encontrado na coleção de Projetos, exibindo documento retornado:\n")
+            
+                dados_projeto = self.conexao_bd.Projetos.find({ "_id": ObjectId(id_projeto)}, {"_id" : 0})
+            
+                print(str(dados_projeto[0]))
+                return True
+
+            else:
+                print("[Orquestrador] id projeto '" + str(id_projeto) + "' não encontrado na coleção de ProjetoPessoa\n")
+                
+            return False
+        
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
+
+### Orquestrador Externos
+        
+            
+    def gera_hash(self, id_projeto):
+        try:
+           now = datetime.now()
+           token1 = str(id_projeto) + str(now)             
+           print(token1)  
+           token = hashlib.sha256(token1.encode()).hexdigest()
+           print(token)
+           return str(token)
+        except Exception as e:
+            print("[Orquestrador.ERRO] Erro durante a geração do Token")
+            raise(e)
+       
+    def armazenar_tokens(self, id_projeto, token, vencimento):
+        try:
+            colecao_tokens = self.conexao_bd.Tokens            
+            armazena_token = colecao_tokens.insert_one({'id_projeto' : str(id_projeto)
+                                                         ,'token' : token, 
+                                                          'vencimento'  : vencimento})
+            print("id:" + str(id_projeto))
+
+        except Exception as e:            
+            print("[Orquestrador.Externos] Erro durante o armazenamento de token")
+            raise(e)
+
+
+    
+            
+            
+

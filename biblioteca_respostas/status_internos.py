@@ -48,12 +48,12 @@ class StatusInternos(Exception):
       "codigo": self.codigo,
       "mensagem": self.mensagem,
       "objeto": self.objeto,
-      "timestamp": "0000-00-00 00000000000"
+      "timestamp": str(datetime.now())
     }) + "\n")
     
     return jsonify(
       codigo= self.codigo,
       mensagem= self.mensagem,
       objeto= self.objeto,
-      timestamp= "0000-00-00 00000000000"
+      timestamp= str(datetime.now())
     ), 400

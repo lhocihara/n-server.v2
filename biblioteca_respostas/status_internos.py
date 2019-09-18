@@ -33,7 +33,11 @@ class StatusInternos(Exception):
     elif codigo_status == 'SI-12':
       self.mensagem = "Erro ao cadastrar projeto."
     elif codigo_status == 'SI-13': 
-      self.mensagem = "Empresa não encontrada." 
+      self.mensagem = "Empresa não encontrada."
+    elif codigo_status == 'SI-21': 
+      self.mensagem = "Projeto não existente na coleção de dados" 
+    elif codigo_status == 'SI-22': 
+      self.mensagem = "Token expirado." 
     else: 
       self.mensagem = "Situação não catalogada."
     

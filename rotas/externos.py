@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 
-import hashlib
+
 import pymongo
 import dns
 
@@ -48,6 +48,7 @@ schema = JsonSchema(app)
 # @schema.validate: O schema a ser validado durante a requisição
 # ----------------------------------------------------------
 
+
 @blueprint_externos.route("/gera_token", methods=['POST'])
 @cross_origin()
 def Gerar_Token():
@@ -61,7 +62,6 @@ def Gerar_Token():
             vencimento = datetime.now() + timedelta(minutes=5)
             orq.armazenar_tokens(id_projeto, token, vencimento)
             return RespostasAPI('Consulta realizada com sucesso',
-
                                 {
                                     'token': str(token),
                                 }
@@ -70,27 +70,3 @@ def Gerar_Token():
             raise StatusInternos('SI-21', {'projeto': segredo})
     except StatusInternos as e:
         return e.errors
-
-
-@blueprint_externos.route("/valida_token", methods=['POST'])
-@cross_origin()
-def Validar_Token():
-    try:        
-        token = request.json['token']
-        info_token = orq.consulta_info_token(token)
-        vencimento_token = info_token['vencimento']
-        projeto_token = info_token['id_projeto']       
-        if datetime.now() < vencimento_token:
-            projeto = orq.verificar_id_projeto(projeto_token)
-            json_retorno = RespostasAPI('Token válido',
-                                    { "token" : token,
-                                      "id_projeto" : projeto_token,
-                                      "objeto_projeto" : projeto  
-                                    }
-                                    ).JSON
-            return json_retorno      
-        else:
-            raise StatusInternos('SI-22', {'projeto': projeto_token})
-    except StatusInternos as e:
-        return e.errors
-

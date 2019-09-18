@@ -13,7 +13,7 @@ schemaCadastro = {
         "cpf": {
             "type": "string", "minLength": 11, "maxLength": 11
         },
-        "rg:": {
+        "rg": {
             "type": "object",
             "properties": {
                 "emissor": {
@@ -77,7 +77,7 @@ schemaEdicao = {
           {
             "type": "string", "minLength": 11, "maxLength": 11
           },
-          "rg:":
+          "rg":
           {
             "type": "object",
             "properties": {
@@ -168,7 +168,7 @@ schemaAdicao = {
           {
             "type": "string", "minLength": 11, "maxLength": 11
           },
-        "rg:":
+        "rg":
             {
             "type": "object",
             "properties": {

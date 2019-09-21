@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify
+from datetime import datetime 
 
 class RespostasAPI():
   def __init__(self, mensagem_resposta, objeto=None):    
@@ -15,7 +16,7 @@ class RespostasAPI():
         "codigo": self.codigo,
         "mensagem": self.mensagem,
         "objeto": self.objeto,
-        "timestamp": "0000-00-00 00000000000"
+        "timestamp": str(datetime.now())
       }) + "\n")
 
     
@@ -23,17 +24,17 @@ class RespostasAPI():
         codigo= self.codigo,
         mensagem= self.mensagem,
         objeto= self.objeto,
-        timestamp= "0000-00-00 00000000000"
+        timestamp= str(datetime.now())
       )
     else:
       print("\n[Retorno API] JSON de retorno: \n" + str({
         "codigo": self.codigo,
         "mensagem": self.mensagem,
-        "timestamp": "0000-00-00 00000000000"
+        "timestamp": str(datetime.now())
       }) + "\n")
 
       return jsonify(
         codigo= self.codigo,
         mensagem= self.mensagem, 
-        timestamp= "0000-00-00 00000000000"
+        timestamp= str(datetime.now())
       )

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 
 import pymongo
 import dns
+import hashlib
 
 # ----------------------------------------------------------
 # Importação do orquestrador da conexão com BD
@@ -52,21 +53,102 @@ schema = JsonSchema(app)
 @blueprint_externos.route("/gera_token", methods=['POST'])
 @cross_origin()
 def Gerar_Token():
-    try:
-        token_request = request.json
-        segredo = token_request['segredo']
-        retorno = orq.verificar_id_projeto_externos(segredo)
-        if retorno:
-            id_projeto = token_request['segredo']
-            token = orq.gera_hash(id_projeto)
+    try:       
+        segredo = request.json['segredo']
+        projeto_existente = orq.verificar_id_projeto_externos(segredo)
+        if projeto_existente:
+            token = hashlib.sha256((str(segredo) + str(datetime.now())).encode()).hexdigest()
             vencimento = datetime.now() + timedelta(minutes=5)
-            orq.armazenar_tokens(id_projeto, token, vencimento)
-            return RespostasAPI('Consulta realizada com sucesso',
+            orq.armazenar_tokens(segredo, token, vencimento)
+            return RespostasAPI('Token gerado com sucesso',
                                 {
                                     'token': str(token),
                                 }
                                 ).JSON
         else:
             raise StatusInternos('SI-21', {'projeto': segredo})
+    except StatusInternos as e:
+        return e.errors
+
+
+@blueprint_externos.route("/valida_token", methods=['POST'])
+@cross_origin()
+def Validar_Token():
+    try:        
+        token = request.json['token']
+        info_token = orq.consulta_info_token(token)
+        vencimento_token = info_token['vencimento']
+        projeto_token = info_token['id_projeto']       
+        if datetime.now() < vencimento_token:
+            projeto = orq.verificar_id_projeto(projeto_token)
+            json_retorno = RespostasAPI('Token válido',
+                                    { "token" : token,
+                                      "id_projeto" : projeto_token,
+                                      "objeto_projeto" : projeto  
+                                    }
+                                    ).JSON
+            return json_retorno      
+        else:
+            raise StatusInternos('SI-22', {'projeto': projeto_token})
+    except StatusInternos as e:
+        return e.errors
+
+@blueprint_externos.route("/login_externo", methods=['POST'])
+@cross_origin()
+def Logar_Externo():
+    try:
+        metodo_entrada = request.json['metodo_entrada']
+        senha = request.json['senha']
+        tipo_entrada = request.json['tipo_entrada']
+        id_projeto = request.json['segredo']
+    
+        id_pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
+        print(str(pessoa_logada))
+        
+        pessoa_info = orq.verificar_id_usuario(id_pessoa_logada['segredo'])
+        print(str(pessoa_info))
+        
+        projeto_info = orq.verificar_id_projeto_externos(id_projeto)
+        if projeto_info:                  
+            projeto_required_chaves = projeto_info['requerimentos']
+            print(str(projeto_required_chaves))
+            
+            pessoa_req = []        
+            
+            for key in pessoa_info.keys():
+                pessoa_req.append(key)
+            print (str(pessoa_req))
+
+            projeto_req = []
+
+            for key in projeto_required_chaves.keys():
+                projeto_req.append(key)
+            print (str(projeto_req))
+
+            missed_keys = []
+
+            for key in projeto_req.keys():
+                if key not in pessoa_req():
+                    missed_keys.append(key)
+
+            if (len(missed_keys) == 0):
+                # O vinculo pode ser feito
+
+                # retornar login: ok e que o status de vinculo: ok
+                json_retorno = RespostasAPI('Vinculo : Ok',
+                                    { 
+                                        "status" : True,
+                                        "segredo": id_pessoa_logada["segredo"]
+                                    }
+                                    ).JSON
+                return json_retorno
+            else:
+                json_retorno = RespostasAPI('Vinculo : NOK',
+                                    { 
+                                        "status" : False,
+                                        "campos_incompletos" : str(missed_keys)
+                                    }
+                                    ).JSON
+
     except StatusInternos as e:
         return e.errors

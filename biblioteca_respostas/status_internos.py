@@ -33,7 +33,11 @@ class StatusInternos(Exception):
     elif codigo_status == 'SI-12':
       self.mensagem = "Erro ao cadastrar projeto."
     elif codigo_status == 'SI-13': 
-      self.mensagem = "Empresa não encontrada." 
+      self.mensagem = "Empresa não encontrada."
+    elif codigo_status == 'SI-21': 
+      self.mensagem = "Projeto não existente na coleção de dados" 
+    elif codigo_status == 'SI-22': 
+      self.mensagem = "Token expirado." 
     else: 
       self.mensagem = "Situação não catalogada."
     
@@ -44,12 +48,12 @@ class StatusInternos(Exception):
       "codigo": self.codigo,
       "mensagem": self.mensagem,
       "objeto": self.objeto,
-      "timestamp": "0000-00-00 00000000000"
+      "timestamp": str(datetime.now())
     }) + "\n")
     
     return jsonify(
       codigo= self.codigo,
       mensagem= self.mensagem,
       objeto= self.objeto,
-      timestamp= "0000-00-00 00000000000"
+      timestamp= str(datetime.now())
     ), 400

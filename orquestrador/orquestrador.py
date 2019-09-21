@@ -361,7 +361,9 @@ class Orquestrador(object):
             raise(e)
        
     
-    
+    # ----------------------------------------------------------------------
+    # Orquestrador: Externos
+    # ----------------------------------------------------------------------   
     
     def verificar_id_projeto_externos(self, id_projeto):
         try:
@@ -383,31 +385,32 @@ class Orquestrador(object):
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
 
-### Orquestrador Externos
-        
+    
             
-    def gera_hash(self, id_projeto):
-        try:
-           now = datetime.now()
-           token1 = str(id_projeto) + str(now)             
-           print(token1)  
-           token = hashlib.sha256(token1.encode()).hexdigest()
-           print(token)
-           return str(token)
-        except Exception as e:
-            print("[Orquestrador.ERRO] Erro durante a geração do Token")
-            raise(e)
-       
     def armazenar_tokens(self, id_projeto, token, vencimento):
         try:
             colecao_tokens = self.conexao_bd.Tokens            
-            armazena_token = colecao_tokens.insert_one({'id_projeto' : str(id_projeto)
+            colecao_tokens.insert_one({'id_projeto' : str(id_projeto)
                                                          ,'token' : token, 
                                                           'vencimento'  : vencimento})
-            print("id:" + str(id_projeto))
-
+            print("[Orquestrador.Externos] Token armazenado com sucesso, token: " + str(token) + " projeto:" + str(id_projeto))
+            return token
         except Exception as e:            
-            print("[Orquestrador.Externos] Erro durante o armazenamento de token")
+            print("[Orquestrador.Externos.ERRO] Erro durante o armazenamento de token")
+            raise(e)
+
+    def consulta_info_token(self, token):
+        try :
+            if(self.conexao_bd.Tokens.find({"token": token}).limit(1).count() > 0):
+                print("[Orquestrador] Token '" + str(token) + "' encontrado na coleção de Tokens, exibindo documento retornado:\n")
+                dados_token = self.conexao_bd.Tokens.find({ "token": token}, {"token" : 0})               
+                print("[Orquestrador] Dados do Token: " + str(dados_token[0]))
+                return dados_token[0]
+            else:
+                print("[Orquestrador] Token '" + str(token) + "' não encontrado na coleção de Tokens\n")
+                return None
+        except Exception as e:            
+            print("[Orquestrador.Externos.ERRO] Erro durante a validacão do token")
             raise(e)
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify
-
+from datetime import datetime 
 class StatusInternos(Exception):
   def __init__(self, codigo_status, objeto=None):
     # self.dados = ""

@@ -92,3 +92,63 @@ def Validar_Token():
             raise StatusInternos('SI-22', {'projeto': projeto_token})
     except StatusInternos as e:
         return e.errors
+
+@blueprint_externos.route("/login_externo", methods=['POST'])
+@cross_origin()
+def Logar_Externo():
+    try:
+        metodo_entrada = request.json['metodo_entrada']
+        senha = request.json['senha']
+        tipo_entrada = request.json['tipo_entrada']
+        id_projeto = request.json['segredo']
+    
+        id_pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
+        print(str(pessoa_logada))
+        
+        pessoa_info = orq.verificar_id_usuario(id_pessoa_logada['segredo'])
+        print(str(pessoa_info))
+        
+        projeto_info = orq.verificar_id_projeto_externos(id_projeto)
+        if projeto_info:                  
+            projeto_required_chaves = projeto_info['requerimentos']
+            print(str(projeto_required_chaves))
+            
+            pessoa_req = []        
+            
+            for key in pessoa_info.keys():
+                pessoa_req.append(key)
+            print (str(pessoa_req))
+
+            projeto_req = []
+
+            for key in projeto_required_chaves.keys():
+                projeto_req.append(key)
+            print (str(projeto_req))
+
+            missed_keys = []
+
+            for key in projeto_req.keys():
+                if key not in pessoa_req():
+                    missed_keys.append(key)
+
+            if (len(missed_keys) == 0):
+                # O vinculo pode ser feito
+
+                # retornar login: ok e que o status de vinculo: ok
+                json_retorno = RespostasAPI('Vinculo : Ok',
+                                    { 
+                                        "status" : True,
+                                        "segredo": id_pessoa_logada["segredo"]
+                                    }
+                                    ).JSON
+                return json_retorno
+            else:
+                json_retorno = RespostasAPI('Vinculo : NOK',
+                                    { 
+                                        "status" : False,
+                                        "campos_incompletos" : str(missed_keys)
+                                    }
+                                    ).JSON
+
+    except StatusInternos as e:
+        return e.errors

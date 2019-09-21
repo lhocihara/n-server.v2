@@ -103,12 +103,12 @@ def Logar_Externo():
         id_projeto = request.json['segredo']
     
         id_pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
-        print(str(pessoa_logada))
+        print(str(id_pessoa_logada))
         
         pessoa_info = orq.verificar_id_usuario(id_pessoa_logada['segredo'])
         print(str(pessoa_info))
         
-        projeto_info = orq.verificar_id_projeto_externos(id_projeto)
+        projeto_info = orq.verificar_id_projeto(id_projeto)
         if projeto_info:                  
             projeto_required_chaves = projeto_info['requerimentos']
             print(str(projeto_required_chaves))
@@ -121,14 +121,14 @@ def Logar_Externo():
 
             projeto_req = []
 
-            for key in projeto_required_chaves.keys():
-                projeto_req.append(key)
+            for key in projeto_required_chaves:
+                projeto_req.append(key['campo'])
             print (str(projeto_req))
 
             missed_keys = []
 
-            for key in projeto_req.keys():
-                if key not in pessoa_req():
+            for key in projeto_req:
+                if key not in pessoa_req:
                     missed_keys.append(key)
 
             if (len(missed_keys) == 0):

@@ -50,7 +50,7 @@ schema = JsonSchema(app)
 # ----------------------------------------------------------
 
 
-@blueprint_externos.route("/gerar_token", methods=['POST'])
+@blueprint_externos.route("/gera_token", methods=['POST'])
 @cross_origin()
 def Gerar_Token():
     try:       

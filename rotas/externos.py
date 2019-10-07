@@ -151,9 +151,7 @@ def Logar_Externo():
 
             return json_retorno
         else:
-            json_retorno = StatusInternos("Projeto não encontrado na coleção").retorno()
-
-            return json_retorno
+            raise StatusInternos('SI-22')
 
     except StatusInternos as e:
         return e.errors

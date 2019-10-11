@@ -55,11 +55,12 @@ schema = JsonSchema(app)
 def Gerar_Token():
     try:       
         segredo = request.json['segredo']
+        redirect = request.json['redirect']
         projeto_existente = orq.verificar_id_projeto_externos(segredo)
         if projeto_existente:
             token = hashlib.sha256((str(segredo) + str(datetime.now())).encode()).hexdigest()
             vencimento = datetime.now() + timedelta(minutes=5)
-            orq.armazenar_tokens(segredo, token, vencimento)
+            orq.armazenar_tokens(segredo, token, vencimento, redirect)
             return RespostasAPI('Token gerado com sucesso',
                                 {
                                     'token': str(token),
@@ -78,12 +79,14 @@ def Validar_Token():
         token = request.json['token']
         info_token = orq.consulta_info_token(token)
         vencimento_token = info_token['vencimento']
-        projeto_token = info_token['id_projeto']       
+        projeto_token = info_token['id_projeto']
+        redirect_token = info_token['redirect']
         if datetime.now() < vencimento_token:
             projeto = orq.verificar_id_projeto(projeto_token)
             json_retorno = RespostasAPI('Token válido',
                                     { "token" : token,
                                       "id_projeto" : projeto_token,
+                                      "redirect" : redirect_token,
                                       "objeto_projeto" : projeto  
                                     }
                                     ).JSON
@@ -101,21 +104,28 @@ def Logar_Externo():
         senha = request.json['senha']
         tipo_entrada = request.json['tipo_entrada']
         id_projeto = request.json['segredo']
-    
-        id_pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada)
-        print(str(id_pessoa_logada))
+        token = request.json ['token']
+        gerar_vinculo = request.json['gerar_vinculo']               
         
-        pessoa_info = orq.verificar_id_usuario(id_pessoa_logada['segredo'])
-        print(str(pessoa_info))
+        gerar_vinculo = True
+        
+        pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada, externo=True)
+        
+        print(str(pessoa_logada))
+
+        id_pessoa = pessoa_logada['_id']
+
+        projeto_pessoa_info = orq.consultar_projeto_pessoa(id_projeto, id_pessoa)             
         
         projeto_info = orq.verificar_id_projeto(id_projeto)
+        
         if projeto_info:                  
             projeto_required_chaves = projeto_info['requerimentos']
             print(str(projeto_required_chaves))
             
             pessoa_req = []        
             
-            for key in pessoa_info.keys():
+            for key in pessoa_logada.keys():
                 pessoa_req.append(key)
             print (str(pessoa_req))
 
@@ -132,15 +142,25 @@ def Logar_Externo():
                     missed_keys.append(key)
 
             if (len(missed_keys) == 0):
-                # O vinculo pode ser feito
-
-                # retornar login: ok e que o status de vinculo: ok
-                json_retorno = RespostasAPI('Vinculo : Ok',
+                 if projeto_pessoa_info is None:
+                    if gera_vinculo:
+                        criacao_vinculo = datetime.now()
+                        orq.cadastrar_projeto_pessoa(id_projeto,id_pessoa, criacao_vinculo, True, criacao_vinculo)                        
+                    else:                    
+                        json_retorno = RespostasAPI('Vínculo pendente',
                                     { 
-                                        "status" : True,
-                                        "segredo": id_pessoa_logada["segredo"]
+                                        "status" : False,                                        
                                     }
                                     ).JSON
+                 else:
+                        orq.atualizar_ultimo_login(datetime.now())                            
+                        json_retorno = RespostasAPI('Vinculo : Ok',
+                                            { 
+                                                "status" : True,
+                                                "segredo": pessoa_projeto["_id"],
+                                                "redirect": redirect
+                                            }
+                                            ).JSON
             else:
                 json_retorno = RespostasAPI('Vinculo : NOK',
                                     { 

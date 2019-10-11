@@ -141,14 +141,17 @@ def Logar_Externo():
                                         "segredo": id_pessoa_logada["segredo"]
                                     }
                                     ).JSON
-                return json_retorno
             else:
                 json_retorno = RespostasAPI('Vinculo : NOK',
                                     { 
                                         "status" : False,
-                                        "campos_incompletos" : str(missed_keys)
+                                        "campos_incompletos" : missed_keys
                                     }
                                     ).JSON
+
+            return json_retorno
+        else:
+            raise StatusInternos('SI-22')
 
     except StatusInternos as e:
         return e.errors

@@ -20,8 +20,7 @@ class Orquestrador(object):
         senha_banco = urllib.parse.quote_plus('rgPuzhTgc8HAHFlV')
 
         # Criando conexão com o MongoDB
-        conexao_servidor = MongoClient(
-            'mongodb+srv://%s:%s@cluster0-hygoa.gcp.mongodb.net/?retryWrites=true' % (usuario_banco, senha_banco))
+        conexao_servidor = MongoClient('mongodb+srv://%s:%s@cluster0-hygoa.gcp.mongodb.net/?retryWrites=true' % (usuario_banco, senha_banco))
 
         # Instanciando um gerenciador do banco de dados TCC
         self.conexao_bd = conexao_servidor.TCC
@@ -62,22 +61,18 @@ class Orquestrador(object):
                 print("\n[Orquestrador] Dados novos:\n" + str(dados_novos))
 
                 try:
-                    self.conexao_bd.Pessoas.update(
-                        {"_id": ObjectId(segredo)}, {"$set":  dados_novos})
+                    self.conexao_bd.Pessoas.update({"_id": ObjectId(segredo)}, {"$set":  dados_novos})
                         
                 except Exception as e:
                     print(e)
-                    raise Exception(StatusInternos(
-                        "SI-8", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos, "segredo": segredo}))
+                    raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos, "segredo": segredo}))
 
             else:
-                raise Exception(StatusInternos(
-                    "SI-8", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos, "segredo": segredo}))
+                raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos, "segredo": segredo}))
 
         except Exception as e:
             print(e)
-            raise Exception(StatusInternos(
-                "SI-4", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos}))
+            raise Exception(StatusInternos("SI-4", {"colecao": "Pessoas", "momento": "adicionar dados novos", "dados novos": dados_novos}))
 
     ##Edição de Dados Pessoa
     def editar_dados_pessoa(self, segredo, dados):
@@ -88,22 +83,18 @@ class Orquestrador(object):
                 print("\n[Orquestrador] Dados novos:\n" + str(dados))
 
                 try:
-                    self.conexao_bd.Pessoas.update(
-                        {"_id": ObjectId(segredo)}, {"$set":  dados})
+                    self.conexao_bd.Pessoas.update({"_id": ObjectId(segredo)}, {"$set":  dados})
 
                 except Exception as e:
                     print(e)
-                    raise Exception(StatusInternos(
-                        "SI-8", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados, "segredo": segredo}))
+                    raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados, "segredo": segredo}))
 
             else:
-                raise Exception(StatusInternos(
-                    "SI-8", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados, "segredo": segredo}))
+                raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados, "segredo": segredo}))
 
         except Exception as e:
             print(e)
-            raise Exception(StatusInternos(
-                "SI-4", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados}))
+            raise Exception(StatusInternos("SI-4", {"colecao": "Pessoas", "momento": "editar dados novos", "dados novos": dados}))
 
     ## Exclusão de Pessoa
     def excluir_pessoa(self, pessoa_id_usuario):
@@ -120,28 +111,25 @@ class Orquestrador(object):
                 print("\n[Orquestrador] Exclusão de dados:\n" + str(dados))
 
                 try:
-                    self.conexao_bd.Pessoas.update(
-                    {"_id": ObjectId(segredo)}, {"$unset": dados}), False, True
+                    self.conexao_bd.Pessoas.update({"_id": ObjectId(segredo)}, {"$unset": dados}), False, True
 
                 except Exception as e:
                     print(e)
-                    raise Exception(StatusInternos(
-                    "SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
+                    raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
                          "segredo": segredo}))
 
             else:
-                raise Exception(StatusInternos(
-                "SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
+                raise Exception(StatusInternos("SI-8", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados,
                      "segredo": segredo}))
 
         except Exception as e:
             print(e)
-            raise Exception(StatusInternos(
-                "SI-4", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados}))
+            raise Exception(StatusInternos("SI-4", {"colecao": "Pessoas", "momento": "Excluir dados", "dados excluídos": dados}))
             
                
     
-    def login_pessoa(self, valor_login, senha, tipo):
+    def login_pessoa(self, valor_login, senha, tipo, externo):
+        externo = False       
         # Login por cpf
         if(tipo == '0'):
             metodo_login = "cpf"
@@ -151,31 +139,33 @@ class Orquestrador(object):
         # Login com identificador errado
         else:
             print("[Orquestrador.ERRO] Método de login não foi identificado.")
-            raise StatusInternos(
-                'SI-7', {"metodo_login": tipo, metodo_login: valor_login, 'senha': senha})
+            raise StatusInternos('SI-7', {"metodo_login": tipo, metodo_login: valor_login, 'senha': senha})
 
         try:
             if(self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]}).limit(1).count() > 0):
-                print("[Orquestrador] " + metodo_login + ": '" + valor_login +
-                      "' encontrado na coleção de Pessoas, exibindo documento retornado:")
+                print("[Orquestrador] " + metodo_login + ": '" + valor_login + "' encontrado na coleção de Pessoas, exibindo documento retornado:")
 
-                dados_pessoa = self.conexao_bd.Pessoas.find(
-                    {"$and": [{metodo_login: valor_login}, {"senha": senha}]})
+                dados_pessoa = self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]})
 
-                print(str({
-                    "segredo": str(dados_pessoa[0]['_id']),
-                    "usuario_nome": str(dados_pessoa[0]['nome_completo'])
-                }))
+                if not externos:
+                    print(str({
+                        "segredo": str(dados_pessoa[0]['_id']),
+                        "usuario_nome": str(dados_pessoa[0]['nome_completo'])
+                    }))
 
-                return {
-                    'segredo': str(dados_pessoa[0]['_id']),
-                    'nome_usuario': str(dados_pessoa[0]['nome_completo'])
-                }
+                    return {
+                        'segredo': str(dados_pessoa[0]['_id']),
+                        'nome_usuario': str(dados_pessoa[0]['nome_completo'])
+                    }
+                else :
+                     print(str({
+                        "dados_pessoa": str(dados_pessoa[0])
+                    }))
+                     return (dados_pessoa[0])
 
             else:
-                print("[Orquestrador] " + metodo_login + ": '" +
-                      valor_login + "' não encontrado na coleção de Pessoas.")
-                raise StatusInternos
+              print("[Orquestrador] " + metodo_login + ": '" + valor_login + "' não encontrado na coleção de Pessoas.")
+              raise StatusInternos
         except Exception as e:
             print(e)
             raise StatusInternos('SI-6')
@@ -185,18 +175,15 @@ class Orquestrador(object):
     def verificar_id_usuario(self, pessoa_id_usuario):
         try:
             if(self.conexao_bd.Pessoas.find({"_id": ObjectId(pessoa_id_usuario)}).limit(1).count() > 0):
-                print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) +
-                      "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
+                print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) + "' encontrado na coleção de Pessoas, exibindo documento retornado:\n")
 
-                dados_pessoa = self.conexao_bd.Pessoas.find(
-                    {"_id": ObjectId(pessoa_id_usuario)},{'_id': 0})
+                dados_pessoa = self.conexao_bd.Pessoas.find({"_id": ObjectId(pessoa_id_usuario)},{'_id': 0})
                 r = dados_pessoa[0]
                 print(str(r))
 
                 return r
             else:
-                print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) +
-                      "' não encontrado na coleção de Pessoas\n")
+                print("[Orquestrador] id pessoa '" + str(pessoa_id_usuario) + "' não encontrado na coleção de Pessoas\n")
                 return None
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
@@ -219,7 +206,8 @@ class Orquestrador(object):
         else:
             return False
     
-    ##Verifica se CPF ou Email do Usuário existe na base de dados para pode realizar o Login
+    ##Verifica se CPF ou Email do Usuário existe na base de dados para pode
+    ##realizar o Login
     def verificar_metodo_login_existente(self, pessoa_cpf, pessoa_email):
         if(self.conexao_bd.Pessoas.find({"$or": [{"cpf": pessoa_cpf}, {"email": pessoa_email}]}).limit(1).count() > 0):
             return True
@@ -255,18 +243,15 @@ class Orquestrador(object):
     def verificar_id_empresa(self, empresa_id_usuario):
         try:
             if (self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}).limit(1).count() > 0):
-                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
-                      "' encontrado na coleção de Empresas, exibindo documento retornado:\n")
+                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) + "' encontrado na coleção de Empresas, exibindo documento retornado:\n")
 
-                dados_empresa = self.conexao_bd.Empresas.find(
-                    {"_id": ObjectId(empresa_id_usuario)}, {'_id': 0})
+                dados_empresa = self.conexao_bd.Empresas.find({"_id": ObjectId(empresa_id_usuario)}, {'_id': 0})
 
                 r = dados_empresa[0]
-                print (str(r))
+                print(str(r))
                 return r
             else:
-                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) +
-                      "' não encontrado na coleção de Empresas\n")
+                print("[Orquestrador] id empresa '" + str(empresa_id_usuario) + "' não encontrado na coleção de Empresas\n")
 
                 return None
         except Exception as e:
@@ -313,7 +298,7 @@ class Orquestrador(object):
 
     # ----------------------------------------------------------------------
     # Orquestrador: Projeto
-    # ----------------------------------------------------------------------        
+    # ----------------------------------------------------------------------
     
     def cadastrar_projeto(self, projeto):
 
@@ -363,7 +348,7 @@ class Orquestrador(object):
     
     # ----------------------------------------------------------------------
     # Orquestrador: Externos
-    # ----------------------------------------------------------------------   
+    # ----------------------------------------------------------------------
     
     def verificar_id_projeto_externos(self, id_projeto):
         try:
@@ -413,8 +398,53 @@ class Orquestrador(object):
             print("[Orquestrador.Externos.ERRO] Erro durante a validacão do token")
             raise(e)
 
-
     
+    def consultar_projeto_pessoa(self, id_projeto, id_pessoa):
+        try:
+             if(self.conexao_bd.ProjetoPessoa.find({"id_projeto": id_projeto, "id_pessoa": id_pessoa}).limit(1).count() > 0):
+                print("[Orquestrador] Registro ProjetoPessoa com os dados: '" + str(id_projeto) + " " + str(id_pessoa) + 
+                      "' encontrado na coleção ProjetoPessoa, exibindo documento retornado:\n")
+                dados_pessoa_projeto = self.conexao_bd.ProjetoPessoa.find({"id_projeto": id_projeto, "id_pessoa": id_pessoa} , ({"id_projeto" : 0 , "id_pessoa" : 0}))
+                print("[Orquestrador] Dados PessoaProjeto: " + str(dados_pessoa_projeto[0]))
+                return dados_pessoa_projeto[0]
+             else:
+                print("[Orquestrador] Registro PessoaProjeto com os dados  '" + str(id_projeto) + " " + str(id_pessoa) + "' não encontrado na coleção de Tokens\n")
+                return None
+        except Exception as e:
+            print("[Orquestrador.Externos.ERRO] Erro durante a busca de registro em ProjetoPessoa")
+            raise(e)
+
+
+    def cadastrar_projeto_pessoa(self, id_projeto, id_pessoa, criacao_vinculo, status, ultimo_login):
+        try :
+            if(id_projeto is not null | id_projeto != "" & id_pessoa is not null | id_pessoa != ""):
+                cadastra_projeto_pessoa = conexao_bd.ProjetoPessoa.insert_one({'id_projeto' : id_projeto
+                                                         ,'id_pessoa' : id_pessoa, 
+                                                          'criacao_vinculo'  : criacao_vinculo,
+                                                          'status' : status,
+                                                          'ultimo_login' : ultimo_login})
+                print("[Orquestrador.Externos] Token armazenado com sucesso, token: " + str(token) + " projeto:" + str(id_projeto))
+                return(cadastra_projeto_pessoa['_id'])
+            else:
+                print("[Orquestrador.Externos] Erro na parametriazação CadastroProjetoPessoa")
+                return None
+        except Exception as e:
+            print("[Orquestrador.Externos.ERRO] Erro durante o cadastro de ProjetoPessoa")
+            raise(e)
+
+    def atualizar_ultimo_login(segredo, data):
+        try:
+            if(data is not null & data != ""):
+                self.conexao_bd.Pessoas.update({"_id": ObjectId(segredo)}, {"ultimo_login" : data})
+                print("[Orquestrador.Externos] Ultimo login atualizado para: " + str(data))
+            else:
+                print("[Orquestrador.Externos] Erro na parametrização do último login" + str(data))
+        except Exception as e:
+            print("[Orquestrador.Externos.ERRO] Erro durante a validacão do token")
+            raise(e)
+
+
             
-            
+      
+
 

@@ -106,7 +106,7 @@ def Logar_Externo():
         id_projeto = request.json['segredo']
         token = request.json ['token']
         
-        gerar_vinculo = False;
+        gerar_vinculo = False
         
         if 'gera_vinculo' in request.json:
             gerar_vinculo = True

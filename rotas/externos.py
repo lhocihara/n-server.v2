@@ -105,35 +105,32 @@ def Logar_Externo():
         tipo_entrada = request.json['tipo_entrada']
         id_projeto = request.json['segredo']
         token = request.json ['token']
-        gerar_vinculo = request.json['gerar_vinculo']               
         
-        gerar_vinculo = True
+        gerar_vinculo = False;
+        
+        if 'gera_vinculo' in request.json:
+            gerar_vinculo = True
         
         pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada, externo=True)
-        
-        print(str(pessoa_logada))
-
         id_pessoa = pessoa_logada['_id']
 
-        projeto_pessoa_info = orq.consultar_projeto_pessoa(id_projeto, id_pessoa)             
-        
+        projeto_pessoa_info = orq.consultar_projeto_pessoa(id_projeto, id_pessoa)            
         projeto_info = orq.verificar_id_projeto(id_projeto)
         
         if projeto_info:                  
-            projeto_required_chaves = projeto_info['requerimentos']
-            print(str(projeto_required_chaves))
+            projeto_required_chaves = projeto_info['requerimentos']          
             
             pessoa_req = []        
             
             for key in pessoa_logada.keys():
                 pessoa_req.append(key)
-            print (str(pessoa_req))
+            
 
             projeto_req = []
 
             for key in projeto_required_chaves:
                 projeto_req.append(key['campo'])
-            print (str(projeto_req))
+           
 
             missed_keys = []
 
@@ -143,29 +140,45 @@ def Logar_Externo():
 
             if (len(missed_keys) == 0):
                  if projeto_pessoa_info is None:
-                    if gera_vinculo:
+                    if gerar_vinculo:
                         criacao_vinculo = datetime.now()
-                        orq.cadastrar_projeto_pessoa(id_projeto,id_pessoa, criacao_vinculo, True, criacao_vinculo)                        
-                    else:                    
-                        json_retorno = RespostasAPI('Vínculo pendente',
+                        redirect_token = orq.consulta_info_token(token)
+                        redirect_link = redirect_token['redirect']
+                        cadastro_pp = orq.cadastrar_projeto_pessoa(id_projeto,id_pessoa, criacao_vinculo, True, criacao_vinculo)
+                        json_retorno = RespostasAPI('Vínculo Gerado',
                                     { 
-                                        "status" : False,                                        
+                                       "status_requerimento" : True,
+                                        "status_vinculo" : True,
+                                        "segredo": str(cadastro_pp),
+                                        "redirect": redirect_link,
+                                    }
+                                    ).JSON
+
+                    else:                    
+                        json_retorno = RespostasAPI('Vínculo Pendente',
+                                    { 
+                                        "status_requerimento" : True,
+                                        "status_vinculo" : False
                                     }
                                     ).JSON
                  else:
-                        orq.atualizar_ultimo_login(datetime.now())                            
-                        json_retorno = RespostasAPI('Vinculo : Ok',
+                        registro_pp = projeto_pessoa_info['_id']
+                        redirect_token = orq.consulta_info_token(token)
+                        redirect_link = redirect_token['redirect']
+                        orq.atualizar_ultimo_login(str(registro_pp), datetime.now())                            
+                        json_retorno = RespostasAPI('Vinculo Ok',
                                             { 
-                                                "status" : True,
-                                                "segredo": pessoa_projeto["_id"],
-                                                "redirect": redirect
+                                                "status_requerimento" : True,
+                                                "status_vinculo" : True,
+                                                "segredo": str(registro_pp),
+                                                "redirect": redirect_link,
                                             }
                                             ).JSON
             else:
-                json_retorno = RespostasAPI('Vinculo : NOK',
+                json_retorno = RespostasAPI('Vinculo NOK',
                                     { 
-                                        "status" : False,
-                                        "campos_incompletos" : missed_keys
+                                        "status_requerimento" : False,
+                                        "campos_incompletos" : missed_keys,
                                     }
                                     ).JSON
 

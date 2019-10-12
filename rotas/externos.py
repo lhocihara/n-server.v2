@@ -201,7 +201,7 @@ def Consultar_Externo(segredo):
         status_pp = dados_pp['status']
 
         if status_pp == True:
-            dados_projeto = orq.verificar_id_projeto(projeto_pp);
+            dados_projeto = orq.verificar_id_projeto(projeto_pp)
             requerimentos_projeto = dados_projeto['requerimentos']
             dados_pessoa = orq.verificar_id_usuario(pessoa_pp)
 

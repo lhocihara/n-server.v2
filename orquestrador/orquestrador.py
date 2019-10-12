@@ -398,8 +398,7 @@ class Orquestrador(object):
     def consultar_projeto_pessoa(self, id_projeto, id_pessoa):
         try:
              if(self.conexao_bd.ProjetoPessoa.find({"id_projeto": id_projeto, "id_pessoa": id_pessoa}).limit(1).count() > 0):
-                print("[Orquestrador] Registro ProjetoPessoa com os dados: '" + str(id_projeto) + " " + str(id_pessoa) + 
-                      "' encontrado na coleção ProjetoPessoa, exibindo documento retornado:\n")
+                print("[Orquestrador] Registro ProjetoPessoa com os dados: '" + str(id_projeto) + " " + str(id_pessoa) + "' encontrado na coleção ProjetoPessoa, exibindo documento retornado:\n")
                 dados_pessoa_projeto = self.conexao_bd.ProjetoPessoa.find({"id_projeto": id_projeto, "id_pessoa": id_pessoa} , ({"id_projeto" : 0 , "id_pessoa" : 0}))
                 print("[Orquestrador] Dados PessoaProjeto: " + str(dados_pessoa_projeto[0]))
                 return dados_pessoa_projeto[0]
@@ -431,11 +430,22 @@ class Orquestrador(object):
             print("[Orquestrador.Externos] Ultimo login atualizado para: " + str(data))
             
         except Exception as e:
-            print("[Orquestrador.Externos.ERRO] Erro durante atualização do último login")
+            print("[Orquestrador.Externos.ERRO] Erro durante a validacão do token")
             raise(e)
 
-
-            
+    def consultar_projeto_pessoa_segredo(self, segredo):
+        try:
+             if(self.conexao_bd.ProjetoPessoa.find({"_id": ObjectId(segredo)}).limit(1).count() > 0):
+                print("[Orquestrador] Registro ProjetoPessoa com segredo :  '" + str(segredo) + " " + "' encontrado na coleção ProjetoPessoa, exibindo documento retornado:\n")
+                dados_pessoa_projeto_segredo = self.conexao_bd.ProjetoPessoa.find({"_id":ObjectId(segredo)} , {"_id" : 0})
+                print("[Orquestrador] Dados PessoaProjeto: " + str(dados_pessoa_projeto_segredo[0]))
+                return dados_pessoa_projeto_segredo[0]
+             else:
+                print("[Orquestrador] Registro PessoaProjeto com o segredo '" + str(segredo) + " " + "' não encontrado na coleção de ProjetoPessoa\n")
+                return None
+        except Exception as e:
+            print("[Orquestrador.Externos.ERRO] Erro durante a busca de registro em ProjetoPessoa")
+            raise(e)
       
 
 

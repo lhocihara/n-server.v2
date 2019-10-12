@@ -144,7 +144,7 @@ def Logar_Externo():
                         criacao_vinculo = datetime.now()
                         redirect_token = orq.consulta_info_token(token)
                         redirect_link = redirect_token['redirect']
-                        cadastro_pp = orq.cadastrar_projeto_pessoa(str(id_projeto),str(id_pessoa), criacao_vinculo, True, criacao_vinculo))
+                        cadastro_pp = orq.cadastrar_projeto_pessoa(str(id_projeto),str(id_pessoa), criacao_vinculo, True, criacao_vinculo)
                         json_retorno = RespostasAPI('Vínculo Gerado',
                                     { 
                                        "status_requerimento" : True,

@@ -128,8 +128,7 @@ class Orquestrador(object):
             
                
     
-    def login_pessoa(self, valor_login, senha, tipo, externo):
-        externo = False       
+    def login_pessoa(self, valor_login, senha, tipo, externo):      
         # Login por cpf
         if(tipo == '0'):
             metodo_login = "cpf"
@@ -147,11 +146,7 @@ class Orquestrador(object):
 
                 dados_pessoa = self.conexao_bd.Pessoas.find({"$and": [{metodo_login: valor_login}, {"senha": senha}]})
 
-                if not externos:
-                    print(str({
-                        "segredo": str(dados_pessoa[0]['_id']),
-                        "usuario_nome": str(dados_pessoa[0]['nome_completo'])
-                    }))
+                if externo == False:
 
                     return {
                         'segredo': str(dados_pessoa[0]['_id']),
@@ -372,12 +367,13 @@ class Orquestrador(object):
 
     
             
-    def armazenar_tokens(self, id_projeto, token, vencimento):
+    def armazenar_tokens(self, id_projeto, token, vencimento, redirect):
         try:
             colecao_tokens = self.conexao_bd.Tokens            
             colecao_tokens.insert_one({'id_projeto' : str(id_projeto)
                                                          ,'token' : token, 
-                                                          'vencimento'  : vencimento})
+                                                          'vencimento'  : vencimento,
+                                                          'redirect' : redirect})
             print("[Orquestrador.Externos] Token armazenado com sucesso, token: " + str(token) + " projeto:" + str(id_projeto))
             return token
         except Exception as e:            
@@ -416,31 +412,26 @@ class Orquestrador(object):
 
 
     def cadastrar_projeto_pessoa(self, id_projeto, id_pessoa, criacao_vinculo, status, ultimo_login):
-        try :
-            if(id_projeto is not null | id_projeto != "" & id_pessoa is not null | id_pessoa != ""):
-                cadastra_projeto_pessoa = conexao_bd.ProjetoPessoa.insert_one({'id_projeto' : id_projeto
-                                                         ,'id_pessoa' : id_pessoa, 
-                                                          'criacao_vinculo'  : criacao_vinculo,
-                                                          'status' : status,
-                                                          'ultimo_login' : ultimo_login})
-                print("[Orquestrador.Externos] Token armazenado com sucesso, token: " + str(token) + " projeto:" + str(id_projeto))
-                return(cadastra_projeto_pessoa['_id'])
-            else:
-                print("[Orquestrador.Externos] Erro na parametriazação CadastroProjetoPessoa")
-                return None
+        try :           
+            cadastra_projeto_pessoa = self.conexao_bd.ProjetoPessoa.insert_one({'id_projeto' : id_projeto
+                                                        ,'id_pessoa' : id_pessoa, 
+                                                        'criacao_vinculo'  : criacao_vinculo,
+                                                        'status' : status,
+                                                        'ultimo_login' : ultimo_login})
+            print("[Orquestrador.Externos] Vinculo ProjetoPessoa criado com sucesso, registro " + str(cadastra_projeto_pessoa))
+            return(cadastra_projeto_pessoa.inserted_id)
+            
         except Exception as e:
             print("[Orquestrador.Externos.ERRO] Erro durante o cadastro de ProjetoPessoa")
             raise(e)
 
-    def atualizar_ultimo_login(segredo, data):
-        try:
-            if(data is not null & data != ""):
-                self.conexao_bd.Pessoas.update({"_id": ObjectId(segredo)}, {"ultimo_login" : data})
-                print("[Orquestrador.Externos] Ultimo login atualizado para: " + str(data))
-            else:
-                print("[Orquestrador.Externos] Erro na parametrização do último login" + str(data))
+    def atualizar_ultimo_login(self, segredo, data):
+        try:            
+            self.conexao_bd.ProjetoPessoa.update({"_id": ObjectId(segredo)}, {"$set" : {"ultimo_login" : data}})
+            print("[Orquestrador.Externos] Ultimo login atualizado para: " + str(data))
+            
         except Exception as e:
-            print("[Orquestrador.Externos.ERRO] Erro durante a validacão do token")
+            print("[Orquestrador.Externos.ERRO] Erro durante atualização do último login")
             raise(e)
 
 

@@ -34,7 +34,7 @@ schemaCadastro = {
             "type": "string", "format": "email"
         },
         "senha": {
-            "type": "string", "minLength": 8  # Adicionar criptografia
+            "type": "string", "minLength": 8 
         },
     },
          "additionalProperties": False
@@ -70,6 +70,10 @@ schemaEdicao = {
         "type": "object",
         "properties": {
           "nome_completo":
+          {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
+          },
+          "apelido":
           {
             "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
           },
@@ -161,6 +165,10 @@ schemaAdicao = {
         "type": "object",
     "properties": {
         "nome_completo":
+          {
+            "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
+          },
+          "apelido":
           {
             "type": "string", "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
           },

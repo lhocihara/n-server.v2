@@ -144,7 +144,7 @@ def Logar_Externo():
                         criacao_vinculo = datetime.now()
                         redirect_token = orq.consulta_info_token(token)
                         redirect_link = redirect_token['redirect']
-                        cadastro_pp = orq.cadastrar_projeto_pessoa(id_projeto,id_pessoa, criacao_vinculo, True, criacao_vinculo)
+                        cadastro_pp = orq.cadastrar_projeto_pessoa(str(id_projeto),(str(id_pessoa), criacao_vinculo, True, criacao_vinculo))
                         json_retorno = RespostasAPI('Vínculo Gerado',
                                     { 
                                        "status_requerimento" : True,
@@ -188,3 +188,51 @@ def Logar_Externo():
 
     except StatusInternos as e:
         return e.errors
+
+
+@blueprint_externos.route("/consultar_externo/<segredo>")
+@cross_origin()
+def Consultar_Externo(segredo):
+    try:
+        segredo = ObjectId(segredo)
+        dados_pp = orq.consultar_projeto_pessoa_segredo(segredo)
+        pessoa_pp = dados_pp['id_pessoa']
+        projeto_pp = dados_pp['id_projeto']
+        status_pp = dados_pp['status']
+
+        if status_pp == True:
+            dados_projeto = orq.verificar_id_projeto(projeto_pp);
+            requerimentos_projeto = dados_projeto['requerimentos']
+            dados_pessoa = orq.verificar_id_usuario(pessoa_pp)
+
+            projeto_req = []
+
+            for key in requerimentos_projeto:
+                projeto_req.append(key['campo'])            
+
+            requerimentos_pessoa_x_projeto = {}
+
+            for key, value in dados_pessoa.items():
+                if key in projeto_req:
+                    requerimentos_pessoa_x_projeto[key] = value            
+
+            
+            json_retorno = RespostasAPI('Consulta externa realizada com sucesso',
+                                    { 
+                                       "pessoa" : str(pessoa_pp),
+                                        "dados" : requerimentos_pessoa_x_projeto,
+                                    }
+                                    ).JSON
+        else:
+             json_retorno = RespostasAPI('Consulta externa não autorizada',
+                                    { 
+                                       "pessoa" : str(pessoa_pp)
+                                    }
+                                    ).JSON
+        return json_retorno
+    except StatusInternos as e:
+        return e.errors
+
+
+
+

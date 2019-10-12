@@ -114,7 +114,7 @@ def Logar_Externo():
         pessoa_logada = orq.login_pessoa(metodo_entrada, senha, tipo_entrada, externo=True)
         id_pessoa = pessoa_logada['_id']
 
-        projeto_pessoa_info = orq.consultar_projeto_pessoa(id_projeto, id_pessoa)            
+        projeto_pessoa_info = orq.consultar_projeto_pessoa(id_projeto, str(id_pessoa))            
         projeto_info = orq.verificar_id_projeto(id_projeto)
         
         if projeto_info:                  

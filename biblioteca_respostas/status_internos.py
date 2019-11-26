@@ -37,7 +37,9 @@ class StatusInternos(Exception):
     elif codigo_status == 'SI-21': 
       self.mensagem = "Projeto não existente na coleção de dados" 
     elif codigo_status == 'SI-22': 
-      self.mensagem = "Token expirado." 
+      self.mensagem = "Token expirado."
+    elif codigo_status == 'SI-23':
+        self.mensagem = "Pessoa não encontrada na coleção de dados."
     else: 
       self.mensagem = "Situação não catalogada."
     

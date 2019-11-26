@@ -342,39 +342,8 @@ class Orquestrador(object):
     # Orquestrador: ProjetoPessoa
     # ----------------------------------------------------------------------
 
-    def consulta_projetos_pessoa(self, id_pessoa):
-        try:
-            if(self.conexao_bd.ProjetoPessoa.find({"id_pessoa":  (id_pessoa)}).limit(1).count() > 0):
-                        
-                dados_projeto_pessoa = self.conexao_bd.ProjetoPessoa.find ({"id_pessoa":  (id_pessoa)})
-                
-                lista_pp   = []
-                
-                for i in dados_projeto_pessoa:
-                    lista_pp.append(i)
-                
-                lista_projetos = [y['id_projeto'] for y in lista_pp]
-                
-                projetos_r = []
-                
-                if len(lista_projetos) > 0:
-                    for i in lista_projetos:
-                         projetos = self.conexao_bd.Projetos.find({"_id": ObjectId(i)},  {"_id" : 0})
-                         projetos_r.append(projetos[0])
-                
-                    return projetos_r
-                else:
-                    return None
-                   
-            else:
-                print("[Orquestrador] id pessoa '" + str(id_pessoa) + "' não encontrado na coleção de ProjetoPessoa\n")               
-            return None
-        
-        except Exception as e:
-            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
-            raise(e)
 
-    def consulta_pp_pessoa(self, id_pessoa):
+    def consulta_projetos_pessoa(self, id_pessoa):
         try:
             if(self.conexao_bd.ProjetoPessoa.find({"id_pessoa":  (id_pessoa)}).limit(1).count() > 0):
                 pp_projetos = []

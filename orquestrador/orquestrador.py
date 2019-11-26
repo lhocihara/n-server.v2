@@ -8,6 +8,7 @@ from datetime import datetime
 import hashlib
 
 
+
 from biblioteca_respostas.status_internos import StatusInternos
 
 
@@ -315,9 +316,6 @@ class Orquestrador(object):
         else:
             print("[Orquestrador] empresa não cadastrada na coleção Empresas")
             raise StatusInternos('SI-13')
-
-
-    
     
     
     def verificar_id_projeto(self, id_projeto):
@@ -339,9 +337,7 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
-   
        
-    
     # ----------------------------------------------------------------------
     # Orquestrador: ProjetoPessoa
     # ----------------------------------------------------------------------
@@ -377,6 +373,28 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
+
+    def consulta_pp_pessoa(self, id_pessoa):
+        try:
+            if(self.conexao_bd.ProjetoPessoa.find({"id_pessoa":  (id_pessoa)}).limit(1).count() > 0):
+                pp_projetos = []
+                final_r = []             
+                for proj in self.conexao_bd.ProjetoPessoa.find ({"id_pessoa":  (id_pessoa)}):
+                    pp_projetos.append((proj['id_pessoa'], proj['id_projeto']))
+
+                for pessoa, projeto in pp_projetos:
+                    projetoPessoa = self.conexao_bd.ProjetoPessoa.find_one({"id_pessoa": pessoa, "id_projeto" : projeto}, {"_id" : 0})
+                    projeto = self.conexao_bd.Projetos.find_one({"_id": ObjectId(projeto)},  {"_id" : 0})
+                    projetoPessoa.update(projeto)
+                    final_r.append(projetoPessoa)
+                return final_r
+            else:
+                return None
+              
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
+        
           
 
            

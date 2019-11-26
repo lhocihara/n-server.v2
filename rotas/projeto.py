@@ -105,8 +105,7 @@ def Consultar_Projeto(segredo):
 @cross_origin()
 def Consultar_Por_Pessoa(segredo):
 
-    segredo = segredo
-    print("\n[Requisição-GET] /Consultar dados Projeto:\n" "\n")
+    print("\n[Requisição-GET] /Consultar dados Projeto por Pessoa:\n" "\n")
     try:
         
         lista_projetos = orq.consulta_projetos_pessoa(segredo)
@@ -124,8 +123,3 @@ def Consultar_Por_Pessoa(segredo):
             raise StatusInternos('SI-23', {'pessoa': segredo})       
     except StatusInternos as e:
         return e.errors
-
-
-
-
-

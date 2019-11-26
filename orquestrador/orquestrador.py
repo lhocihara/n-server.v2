@@ -128,7 +128,7 @@ class Orquestrador(object):
             
                
     
-    def login_pessoa(self, valor_login, senha, tipo, externo):      
+    def login_pessoa(self, valor_login, senha, tipo, externo = False):      
         # Login por cpf
         if(tipo == '0'):
             metodo_login = "cpf"

@@ -106,7 +106,7 @@ def Logar_Externo():
         id_projeto = request.json['segredo']
         token = request.json ['token']
         
-        gerar_vinculo = False;
+        gerar_vinculo = False
         
         if 'gera_vinculo' in request.json:
             gerar_vinculo = True
@@ -144,7 +144,7 @@ def Logar_Externo():
                         criacao_vinculo = datetime.now()
                         redirect_token = orq.consulta_info_token(token)
                         redirect_link = redirect_token['redirect']
-                        cadastro_pp = orq.cadastrar_projeto_pessoa(str(id_projeto),str(id_pessoa), criacao_vinculo, True, criacao_vinculo))
+                        cadastro_pp = orq.cadastrar_projeto_pessoa(str(id_projeto),str(id_pessoa), criacao_vinculo, True, criacao_vinculo)
                         json_retorno = RespostasAPI('Vínculo Gerado',
                                     { 
                                        "status_requerimento" : True,
@@ -201,7 +201,7 @@ def Consultar_Externo(segredo):
         status_pp = dados_pp['status']
 
         if status_pp == True:
-            dados_projeto = orq.verificar_id_projeto(projeto_pp);
+            dados_projeto = orq.verificar_id_projeto(projeto_pp)
             requerimentos_projeto = dados_projeto['requerimentos']
             dados_pessoa = orq.verificar_id_usuario(pessoa_pp)
 

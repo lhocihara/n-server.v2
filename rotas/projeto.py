@@ -108,7 +108,7 @@ def Consultar_Por_Pessoa(segredo):
     print("\n[Requisição-GET] /Consultar dados Projeto por Pessoa:\n" "\n")
     try:
         
-        lista_projetos = orq.consulta_projetos_pessoa(segredo)
+        lista_projetos = orq.consulta_projetos_por_pessoa(segredo)
 
         if lista_projetos != None:
                                

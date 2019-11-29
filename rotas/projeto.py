@@ -123,3 +123,34 @@ def Consultar_Por_Pessoa(segredo):
             raise StatusInternos('SI-23', {'pessoa': segredo})       
     except StatusInternos as e:
         return e.errors
+
+
+## ----------------------------------------------------------
+## Aceite de termos
+## ----------------------------------------------------------
+@blueprint_projeto.route("/aceite_termos", methods=['PUT'])
+@cross_origin()
+def Aceitar_Termos():
+    print("\n[Requisição-PUT] /Definir permissão do usuário para o projeto:\n" "\n")
+    try:
+        segredo = request.json['segredo']
+        aceito = request.json['aceito']
+
+        if (type(aceito) != bool):       
+            raise StatusInternos('SI-XX', {'segredo': segredo})        
+
+        status = orq.aceite_termos(segredo, aceito)
+
+        if status != None:
+                               
+            json_retorno = RespostasAPI('Permissão definida',
+                                        {
+                                            'segredo': str(segredo),
+                                            'dados': status
+                                        }
+                                        ).JSON
+            return json_retorno       
+        else:
+            raise StatusInternos('SI-4', {'segredo': segredo})         
+    except StatusInternos as e:
+        return e.errors

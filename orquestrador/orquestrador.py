@@ -492,6 +492,4 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.Externos.ERRO] Erro durante a busca de registro em ProjetoPessoa")
             raise(e)
-      
-
-
+   

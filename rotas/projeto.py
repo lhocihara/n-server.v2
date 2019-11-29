@@ -98,7 +98,28 @@ def Consultar_Projeto(segredo):
     except StatusInternos as e:
         return e.errors
 
+## ----------------------------------------------------------
+## Endpoint de consulta de projetos
+## ----------------------------------------------------------
+@blueprint_projeto.route("/consulta_por_pessoa/<segredo>")
+@cross_origin()
+def Consultar_Por_Pessoa(segredo):
 
+    print("\n[Requisição-GET] /Consultar dados Projeto por Pessoa:\n" "\n")
+    try:
+        
+        lista_projetos = orq.consulta_projetos_por_pessoa(segredo)
 
-
-
+        if lista_projetos != None:
+                               
+            json_retorno = RespostasAPI('Consulta realizada com sucesso',
+                                    {
+                                        'segredo': str(segredo),
+                                        'dados': lista_projetos
+                                    }
+                                    ).JSON
+            return json_retorno
+        else:
+            raise StatusInternos('SI-23', {'pessoa': segredo})       
+    except StatusInternos as e:
+        return e.errors

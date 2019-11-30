@@ -317,7 +317,6 @@ class Orquestrador(object):
             print("[Orquestrador] empresa não cadastrada na coleção Empresas")
             raise StatusInternos('SI-13')
 
-        
     
     def verificar_id_projeto(self, id_projeto):
         try:
@@ -338,8 +337,7 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
-   
-       
+        
     
     # ----------------------------------------------------------------------
     # Orquestrador: ProjetoPessoa
@@ -371,8 +369,26 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
-                 
-           
+
+
+    def aceite_termos (self, id_projetoPessoa, aceito):
+        try:
+            if(self.conexao_bd.ProjetoPessoa.find({"_id": ObjectId(id_projetoPessoa)}).limit(1).count() > 0):
+                try:                       
+                    self.conexao_bd.ProjetoPessoa.update({"_id": ObjectId(id_projetoPessoa)}, {"$set" : {"status" :  aceito}}) 
+                except Exception as e:
+                    print("[Orquestrador.ERRO] Erro durante a gravação no banco")
+                    raise(e)               
+                pessoa_projeto = self.conexao_bd.ProjetoPessoa.find({"_id": ObjectId(id_projetoPessoa)}, {"_id": 0})
+                return pessoa_projeto[0]['status']
+            else:
+                print("[Orquestrador] id ProjetoPessoa '" + str(id_projetoPessoa) + "' não encontrado na coleção de ProjetoPessoa\n")               
+                return None
+        
+        except Exception as e:
+            print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
+            raise(e)
+                                 
     # ----------------------------------------------------------------------
     # Orquestrador: Externos
     # ----------------------------------------------------------------------
@@ -391,14 +407,12 @@ class Orquestrador(object):
             else:
                 print("[Orquestrador] id projeto '" + str(id_projeto) + "' não encontrado na coleção de ProjetoPessoa\n")
                 
-            return False
-        
+            return False       
         except Exception as e:
             print("[Orquestrador.ERRO] erro durante a execução do comando de seleção")
             raise(e)
 
-    
-            
+               
     def armazenar_tokens(self, id_projeto, token, vencimento, redirect):
         try:
             colecao_tokens = self.conexao_bd.Tokens            
@@ -478,6 +492,4 @@ class Orquestrador(object):
         except Exception as e:
             print("[Orquestrador.Externos.ERRO] Erro durante a busca de registro em ProjetoPessoa")
             raise(e)
-      
-
-
+   

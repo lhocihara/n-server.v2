@@ -356,7 +356,10 @@ class Orquestrador(object):
                     projeto_pessoa.append((proj['id_pessoa'], proj['id_projeto']))
 
                 for pessoa, projeto in projeto_pessoa:
-                    projetoPessoa = self.conexao_bd.ProjetoPessoa.find_one({"id_pessoa": pessoa, "id_projeto" : projeto}, {"_id" : 0})
+                    projetoPessoa = self.conexao_bd.ProjetoPessoa.find_one({"id_pessoa": pessoa, "id_projeto" : projeto})                 
+                    projetoPessoa['_id'] = str(projetoPessoa.pop('_id'))
+                    projetoPessoa['ultimo_login'] = str(projetoPessoa['ultimo_login'])
+                    projetoPessoa['criacao_vinculo'] = str(projetoPessoa['criacao_vinculo'])
                     projeto = self.conexao_bd.Projetos.find_one({"_id": ObjectId(projeto)},  {"_id" : 0})
                     projetoPessoa.update(projeto)
                     final_r.append(projetoPessoa)
